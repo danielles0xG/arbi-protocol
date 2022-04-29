@@ -5,7 +5,7 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
-async function main() {
+async function main(accounts) {
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
   //
