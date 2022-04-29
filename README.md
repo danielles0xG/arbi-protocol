@@ -1,2 +1,2 @@
-# arbi-protocol
+# Arbi-protocol
 DeFi Arbitrage protocol
