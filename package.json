@@ -6,10 +6,25 @@
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.4",
-    "hardhat": "^2.9.3"
+    "hardhat": "^2.9.3",
+    "hardhat-dependency-compiler": "^1.1.2",
+    "prettier": "^2.6.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.19"
   },
   "dependencies": {
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
+    "@openzeppelin/contracts": "^4.6.0",
+    "@openzeppelin/contracts-upgradeable": "^4.5.2",
     "dotenv": "^16.0.0"
+  },
+  "scripts": {
+    "lint-fix": "npm run lint-sol-fix && npm run lint-js-fix && npm run lint-json-fix",
+    "lint-check": "npm run lint-sol-check && npm run lint-js-check && npm run lint-json-check",
+    "lint-json-fix": "prettier --write \"./[a-zA-Z0-9.]+(?!-lock).json\"",
+    "lint-js-fix": "prettier --write \"./**/*.js\"",
+    "lint-sol-fix": "prettier --write \"contracts/**/*.sol\"",
+    "lint-json-check": "prettier --check \"./[a-zA-Z0-9.]+(?!-lock).json\"",
+    "lint-js-check": "prettier --check \"./**/*.js\"",
+    "lint-sol-check": "prettier --check \"contracts/**/*.sol\""
   }
 }

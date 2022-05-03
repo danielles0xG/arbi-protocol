@@ -4,22 +4,23 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const { AAVE } = require("./address_lookup.js")
 
-async function main(accounts) {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+/**
+ * Main script for Strategy deployment
+ */
+async function main() {
+  const ArbiTrader = await hre.ethers.getContractFactory("ArbiTrader");
+  console.log(hre)
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  // Init Arbi trader strategy
+  const strategy = await ArbiTrader.deploy(
+    AAVE.poolAddressesProvider['matic'],
+    "0x8B13f183e27AaD866b0d71F0CD17ca83A9a54ae2");
 
-  await greeter.deployed();
+  await strategy.deployed();
 
-  console.log("Greeter deployed to:", greeter.address);
+  console.log("Greeter deployed to:", strategy.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
