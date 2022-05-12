@@ -2,5 +2,7 @@
 pragma solidity 0.8.10;
 
 interface IExchangeRegistry {
-    function exchangeRegistryMap(string memory _dexSymbol) external returns(address dexAddress);
+    function exchangeRegistryMap(string memory _dexSymbol)
+        external
+        returns (address dexAddress);
 }

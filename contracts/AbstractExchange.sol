@@ -2,23 +2,21 @@
 pragma solidity 0.8.10;
 
 abstract contract AbstractExchange {
-
-    struct Pool{
+    struct Pool {
         address token0;
         address token1;
-        uint8   poolFee;
+        uint8 poolFee;
     }
-    struct Swap{
+    struct Swap {
         Pool pool;
         uint256 amountIn;
         uint256 amountOutMin;
     }
 
-    struct ArbitrageOperation{
+    struct ArbitrageOperation {
         string dexSymbol;
-        Swap [] operations;
+        Swap[] operations;
     }
 
     event InitStrategy(address _baseAsset, uint256 _loanAmount);
-
 }

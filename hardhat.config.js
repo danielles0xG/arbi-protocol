@@ -2,7 +2,7 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 
-// Task action function receives the Hardhat 
+// Task action function receives the Hardhat
 // Runtime Environment as second argument
 task(
   "blockNumber",
@@ -10,7 +10,7 @@ task(
   async (_, { ethers }) => {
     await ethers.provider.getBlockNumber().then((blockNumber) => {
       console.log("Current block number: " + blockNumber);
-      console.log( ethers.provider)
+      console.log(ethers.provider);
     });
   }
 );
@@ -18,10 +18,10 @@ task(
 module.exports = {
   defaultNetwork: "matic",
   networks: {
-    development:{
-      url:'http://localhost:8545',
-      gasPrice:"auto",
-      gas:868514334772,
+    development: {
+      url: "http://localhost:8545",
+      gasPrice: "auto",
+      gas: 868514334772,
       accounts: [process.env.PRIVATE_KEY],
     },
 
@@ -57,10 +57,10 @@ module.exports = {
       sources: "./contracts",
       tests: "./test",
       cache: "./cache",
-      artifacts: "./artifacts"
+      artifacts: "./artifacts",
     },
     mocha: {
-      timeout: 40000
-    }
+      timeout: 40000,
+    },
   },
 };
