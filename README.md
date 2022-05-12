@@ -15,4 +15,21 @@ Flash loan arbitrage strategy.
 
 ### Testing
  - Polygon mainnet fork
-> ```npx hardhat node --fork https://rpc-mumbai.maticvigil.com```
+ ````
+ struct Pool{
+        address token0;
+        address token1;
+        uint8   poolFee;
+    }
+    struct Swap{
+        Pool pool;
+        uint256 amountIn;
+        uint256 amountOutMin;
+    }
+
+    struct ArbitrageOperation{
+        string dexSymbol;
+        Swap [] operations;
+    }
+ */
+````

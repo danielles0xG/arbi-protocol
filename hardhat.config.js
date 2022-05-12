@@ -18,12 +18,13 @@ task(
 module.exports = {
   defaultNetwork: "matic",
   networks: {
-    hardhat: {
-      forking: {
-        url: "https://eth-mainnet.alchemyapi.io/v2/<key>",
-        blockNumber: 14390000,
-      },
+    development:{
+      url:'http://localhost:8545',
+      gasPrice:"auto",
+      gas:868514334772,
+      accounts: [process.env.PRIVATE_KEY],
     },
+
     matic: {
       url: "https://rpc-mumbai.maticvigil.com",
       accounts: [process.env.PRIVATE_KEY],
@@ -52,5 +53,14 @@ module.exports = {
         runs: 200,
       },
     },
+    paths: {
+      sources: "./contracts",
+      tests: "./test",
+      cache: "./cache",
+      artifacts: "./artifacts"
+    },
+    mocha: {
+      timeout: 40000
+    }
   },
 };

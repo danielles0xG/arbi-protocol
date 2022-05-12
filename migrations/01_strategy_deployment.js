@@ -15,12 +15,13 @@ async function main() {
 
   // Init Arbi trader strategy
   const strategy = await ArbiTrader.deploy(
-    AAVE.poolAddressesProvider['matic'],
-    "0x8B13f183e27AaD866b0d71F0CD17ca83A9a54ae2");
+      AAVE.poolAddressesProvider['matic'],
+      "0x8B13f183e27AaD866b0d71F0CD17ca83A9a54ae2"
+    );
 
   await strategy.deployed();
 
-  console.log("Greeter deployed to:", strategy.address);
+  console.log("Arbitrage Strategy deployed to:", strategy.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -8,18 +8,19 @@ import {DataTypes} from "./loans/aave/DataTypes.sol";
 import "./loans/aave/interfaces/IFlashLoanSimpleReceiver.sol";
 import "./loans/aave/interfaces/IPoolAddressesProvider.sol";
 import "./loans/aave/interfaces/IPool.sol";
-import "./exchanges/AbstractExchange.sol";
+import "./AbstractExchange.sol";
 
 /**
  * @notice Functional contract is FlashLoanReceiverBase
  * @dev Contract will NOT store funds or store any given state.
+ * @dev Will be upgradable after demo
  */
 contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     IPoolAddressesProvider public aavePoolProvider;
     IPool public aavePool;
 
-    address public immutable owner;
     address public immutable treassury;
+    address public immutable owner;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Only Owner");
@@ -42,27 +43,23 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     function performStrategy(
         address _asset,
         uint256 _amount,
-        ArbitrageOperation[] calldata _operations
+        bytes calldata _operations
     ) external onlyOwner returns (bool) {
+         _initFlashLoan(_asset,_amount,_operations);
         return true;
     }
 
     function _initFlashLoan(
         address _baseAsset,
         uint256 _loanAmount,
-        bytes calldata _params,
-        uint16 _referralCode
-    ) internal {
+        bytes calldata _params
+    ) internal onlyOwner {
         aavePool.flashLoanSimple(
             address(this),
             _baseAsset,
             _loanAmount,
             _params,
-            _referralCode
-        );
-        require(
-            IERC20(_baseAsset).balanceOf(address(this)) >= _loanAmount,
-            "AT1 Loan Transfer Fail"
+            0
         );
     }
 
@@ -73,6 +70,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
         address _initiator,
         bytes calldata _params
     ) external returns (bool) {
+        require( IERC20(_asset).balanceOf(address(this)) >= _amount,"AT1 Loan Transfer Fail");
         // TOOO: arbi strategy 'executeOperation'
 
         // Reapy: Approve aave pool to take loan amount + fees
