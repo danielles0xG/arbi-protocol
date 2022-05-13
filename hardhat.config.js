@@ -26,7 +26,7 @@ module.exports = {
     },
 
     matic: {
-      url: "https://rpc-mumbai.maticvigil.com",
+      url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
     },
     mumbai: {

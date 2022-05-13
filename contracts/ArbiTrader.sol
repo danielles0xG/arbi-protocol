@@ -91,7 +91,13 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
                  uint256 poolFee,uint256 amountIn,
                  uint256 amountOutMinimum) = _decodeOperation(_operations[i]);
                  address dexAddress = IExchangeRegistry(dexRegistry).exchangeRegistryMap(dexSymbol);
-                 IExchange(dexAddress).swap()
+                 IExchange(dexAddress).swap(
+                     token0,
+                     token1,
+                     amountIn,
+                     amountOutMinimum,
+                     poolFee
+                 )
         }
     }
 
