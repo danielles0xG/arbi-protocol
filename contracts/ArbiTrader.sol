@@ -4,13 +4,12 @@ pragma solidity 0.8.10;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {DataTypes} from "./loans/aave/DataTypes.sol";
-import "./loans/aave/interfaces/IFlashLoanSimpleReceiver.sol";
-import "./loans/aave/interfaces/IPoolAddressesProvider.sol";
-import "./loans/aave/interfaces/IPool.sol";
+import {DataTypes} from "./loans/utils/DataTypes.sol";
+import "./loans/aaveV3/interfaces/IFlashLoanSimpleReceiver.sol";
+import "./loans/aaveV3/interfaces/IPoolAddressesProvider.sol";
 import "./AbstractExchange.sol";
-
 import "./interfaces/IExchangeRegistry.sol";
+import "./interfaces/IExchange.sol";
 
 /**
  * @notice Functional contract is FlashLoanReceiverBase
@@ -19,7 +18,6 @@ import "./interfaces/IExchangeRegistry.sol";
 contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     IPoolAddressesProvider public aavePoolProvider;
     IPool public aavePool;
-
 
     address public owner;
     address public treassury;
@@ -30,7 +28,11 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
         _;
     }
 
-    constructor(address _aavePoolProvider, address _treassury, _dexRegistry) {
+    constructor(
+        address _aavePoolProvider,
+        address _treassury,
+        address _dexRegistry
+    ) {
         owner = msg.sender;
         treassury = payable(_treassury);
         dexRegistry = _dexRegistry;
@@ -52,6 +54,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
         _initFlashLoan(_asset, _amount, _operations);
         return true;
     }
+
     function _initFlashLoan(
         address _baseAsset,
         uint256 _loanAmount,
@@ -65,19 +68,21 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
             0
         );
     }
+
     function executeOperation(
         address _asset,
         uint256 _amount,
         uint256 _premium,
         address _initiator,
         bytes calldata _operations
-    ) external returns (bool) {
+    ) external override returns (bool) {
         require(
             IERC20(_asset).balanceOf(address(this)) >= _amount,
             "AT1 Loan Transfer Fail"
         );
-        // TOOO: arbi strategy 'executeOperation'
-        // Reapy: Approve aave pool to take loan amount + fees
+        // Avee Pool calling executeOperation function on out contract
+            // _executeOperation();
+        // Repay: Approve aave pool to take loan amount + fees
         SafeERC20.safeApprove(
             IERC20(_asset),
             address(aavePool),
@@ -85,29 +90,44 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
         );
         return true;
     }
-    function _executeOperation(bytes calldata _operations) internal {
-        for (uint256 i = 0; i < _operations.length + 1; i++) {
-                (string dexSymbol,address token0,address token1,
-                 uint256 poolFee,uint256 amountIn,
-                 uint256 amountOutMinimum) = _decodeOperation(_operations[i]);
-                 address dexAddress = IExchangeRegistry(dexRegistry).exchangeRegistryMap(dexSymbol);
-                 IExchange(dexAddress).swap(
-                     token0,
-                     token1,
-                     amountIn,
-                     amountOutMinimum,
-                     poolFee
-                 )
+
+    /**
+    * @notice IFlashLoanSimpleReceiver implementation
+    * @dev Loan provider lending criteria
+    * @param _operations Array of encoded operarions (swaps)
+     */
+    function _executeOperation(bytes[] memory _operations, uint256 _limit) internal {
+
+        for (uint256 i = 0; i < _limit + 1; i++) {
+            (
+                string memory dexSymbol,
+                address payable token0,
+                address payable token1,
+                uint256 poolFee,
+                uint256 amountIn,
+                uint256 amountOutMinimum
+            ) = _decodeOperation(_operations[i]);
+
+            address dexAddress = IExchangeRegistry(dexRegistry).exchangeRegistryMap(dexSymbol);
+            
+            require(dexAddress != address(0),"Dex not found");
+            
+            IExchange(dexAddress).swap(
+                token0,
+                token1,
+                amountIn,
+                amountOutMinimum,
+                poolFee
+            );
         }
     }
 
-
-    function _decodeOperation(bytes calldata _operation)
+    function _decodeOperation(bytes memory _operation)
         internal
         returns (
-            string,
-            address,
-            address,
+            string memory,
+            address payable,
+            address payable,
             uint256,
             uint256,
             uint256
@@ -115,22 +135,15 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     {
         return
             abi.decode(
-                _operations,
-                (string, address, address, uint256, uint256, uint256)
+                (_operation),
+                (string , address, address, uint256, uint256, uint256)
             );
     }
-    /**
-     * @notice Fetch Borrowed asset stats
-     * @dev Read asset data
-     * @param _asset Token to borrow
-     */
-    function getReserveData(address _asset)
-        public
-        view
-        returns (DataTypes.ReserveData memory _data)
-    {
-        _data = aavePool.getReserveData(_asset);
-    }
 
-    fallback() external payable {}
+    fallback() external payable {
+        revert();
+    }
+    receive() external payable {
+        revert();
+    } 
 }

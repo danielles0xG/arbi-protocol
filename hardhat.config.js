@@ -4,30 +4,26 @@ require("@nomiclabs/hardhat-etherscan");
 
 // Task action function receives the Hardhat
 // Runtime Environment as second argument
-task(
-  "blockNumber",
-  "Prints the current block number",
-  async (_, { ethers }) => {
-    await ethers.provider.getBlockNumber().then((blockNumber) => {
-      console.log("Current block number: " + blockNumber);
-      console.log(ethers.provider);
-    });
-  }
-);
+
 
 module.exports = {
-  defaultNetwork: "matic",
+  defaultNetwork: "hardhat",
+  paths: {
+    sources: './contracts',
+    tests: './test',
+    artifacts: './artifacts',
+    cache: './cache'
+  },
   networks: {
     development: {
       url: "http://localhost:8545",
       gasPrice: "auto",
-      gas: 868514334772,
       accounts: [process.env.PRIVATE_KEY],
     },
 
     matic: {
       url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}`,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: ["760750760f2159ac85cd2fd0c351912154984a39d6c63165b784f3a91839cb6a"],
     },
     mumbai: {
       url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,
@@ -53,12 +49,12 @@ module.exports = {
         runs: 200,
       },
     },
-    paths: {
-      sources: "./contracts",
-      tests: "./test",
-      cache: "./cache",
-      artifacts: "./artifacts",
-    },
+    // paths: {
+    //   sources: "./contracts",
+    //   tests: "./test",
+    //   // cache: "./cache",
+
+    // },
     mocha: {
       timeout: 40000,
     },

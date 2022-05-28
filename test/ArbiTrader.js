@@ -1,52 +1,56 @@
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
-const { AAVE, ASSETS, TREASURY } = require("../migrations/address_lookup.js");
-const { STRATEGIES, ENCODE_STRUCTS } = require("./Strategies.js");
-let strategy;
+const { ethers, hre } = require("hardhat");
+const { AAVE,ASSETS,TREASURY} = require("../migrations/address_lookup.js")
+const { STRATEGIES ,ENCODE_STRUCTS} = require("./Strategies.js");
+let strategy, registry;
 
 before(async () => {
   const ArbiTrader = await hre.ethers.getContractFactory("ArbiTrader");
-  strategy = await ArbiTrader.deploy(
-    AAVE.poolAddressesProvider["matic"],
-    TREASURY.DEV
-  );
+  strategy = await ArbiTrader.deploy(AAVE.poolAddressesProvider['matic'], TREASURY.DEV);
   strategy = await strategy.deployed();
-});
+})
 
-// Encode Params
+
 before(async () => {
-  const ArbiTrader = await hre.ethers.getContractFactory("ArbiTrader");
+  const accounts = await hre.ethers.getSigners();
+  console.log("accounts: ",accounts);
+
+  // DEPLOY REGISTRY
+  const DexRegistry = await hre.ethers.getContractFactory("DexRegistry");
+  registry = await DexRegistry.deploy();
+  registry = await DexRegistry.deployed();
+
+  // DEPLOY EXCHANGE
+
+
+
+  console.log("registry deployed at: ",registry);
+  
+  // INIT STRATEGY
   strategy = await ArbiTrader.deploy(
-    AAVE.poolAddressesProvider["matic"],
-    TREASURY.DEV
+    AAVE.poolAddressesProvider['matic'],
+    TREASURY.DEV,
+    registry.address
   );
+
   strategy = await strategy.deployed();
+  console.log("Strategy deployed to: ",strategy.address);
 });
 
-describe("ArbiTrader", function () {
+describe("ArbiTrader",function () {
   it("Should return the new greeting once it's changed", async function () {
     const encoded_params = [];
     const abiCoder = ethers.utils.defaultAbiCoder;
 
-    STRATEGIES.map((s) => {
+    STRATEGIES.map(s => {
       encoded_params.push(
-        abiCoder.encode(
-          ENCODE_STRUCTS.DataTypeTemplate,
-          ENCODE_STRUCTS.DataValues(s)
-        )
-      );
+           abiCoder.encode(
+             ENCODE_STRUCTS.DataTypeTemplate,
+             ENCODE_STRUCTS.DataValues(s)
+           )
+        );
     });
-
-    console.log(encoded_params);
-
-    // await strategy.performStrategy(
-    //   LOAN_ASSET,
-    //   LOAN_AMOUNT,
-    //   ENCODED_STRATEGIES,
-
-    // );
-    // console.log("strategy: ",strategy)
-    // expect(await greeter.greet()).to.equal("Hello, world!");
+    
+    console.log(encoded_params)
   });
 });
--``;

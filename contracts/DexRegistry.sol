@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity 0.8.10;
 
-contract ExchangeRegistry {
+contract DexRegistry {
     address public admin;
     mapping(string => address) public exchangeRegistryMap;
     event AddDexEvent(string _symbol, address _dexAddress);

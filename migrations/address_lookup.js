@@ -3,6 +3,18 @@ module.exports.AAVE = {
     matic: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
   },
 };
+module.exports.KYBER = {
+ v1:{ 
+  router: {
+    matic: "0x546C79662E028B661dFB4767664d0273184E4dD1",
+  },
+  v2:{
+    router: {
+      matic: "0x546C79662E028B661dFB4767664d0273184E4dD1",
+    },
+  }}
+};
+
 module.exports.TREASURY = {
   DEV: "0x8B13f183e27AaD866b0d71F0CD17ca83A9a54ae2",
   PROD: "",
