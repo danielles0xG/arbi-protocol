@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.10;
+pragma solidity 0.8.4;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -96,47 +96,54 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     * @dev Loan provider lending criteria
     * @param _operations Array of encoded operarions (swaps)
      */
-    function _executeOperation(bytes[] memory _operations, uint256 _limit) internal {
-
-        for (uint256 i = 0; i < _limit + 1; i++) {
+    function _executeOperation(bytes[] memory _operations, uint160 _loopLimit) internal {
+        // start multicall
+        for (uint256 i = 0; i < _loopLimit + 1; i++) {
             (
-                string memory dexSymbol,
-                address payable token0,
-                address payable token1,
-                uint256 poolFee,
-                uint256 amountIn,
-                uint256 amountOutMinimum
+                string memory _dexSymbol,
+                uint256 _amountIn,
+                uint256 _amountOut,
+                address[] memory _poolsPath, // kyberOnly
+                address[] memory _path,
+                address _to,
+                uint256 _swapTimeout
             ) = _decodeOperation(_operations[i]);
 
-            address dexAddress = IExchangeRegistry(dexRegistry).exchangeRegistryMap(dexSymbol);
+            address _dexAddress = IExchangeRegistry(dexRegistry).exchangeRegistryMap(_dexSymbol);
+            IERC20(_path[0]).approve(address(_dexAddress),_amountIn);
+            require(_dexAddress != address(0),"Dex not found");
             
-            require(dexAddress != address(0),"Dex not found");
-            
-            IExchange(dexAddress).swap(
-                token0,
-                token1,
-                amountIn,
-                amountOutMinimum,
-                poolFee
+            IExchange(_dexAddress).swapExactTokensForTokens(
+                 _amountIn,
+                 _amountOut,
+                 _poolsPath, // kyberOnly address [] 
+                 _path, // IERC20 []
+                 address(this),
+                 _swapTimeout,
+                 _loopLimit
             );
         }
     }
 
     function _decodeOperation(bytes memory _operation)
-        internal
-        returns (
-            string memory,
-            address payable,
-            address payable,
-            uint256,
-            uint256,
-            uint256
-        )
-    {
+        internal returns(
+                string memory,
+                 uint256,
+                 uint256,
+                 address[] memory,
+                 address[] memory,
+                 address,
+                 uint256){
         return
             abi.decode(
                 (_operation),
-                (string , address, address, uint256, uint256, uint256)
+                (string,
+                 uint256,
+                 uint256,
+                 address[],
+                 address[],
+                 address,
+                 uint256)
             );
     }
 
@@ -147,3 +154,5 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
         revert();
     } 
 }
+
+

@@ -1,6 +1,7 @@
 require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
+require('hardhat-contract-sizer');
 
 // Task action function receives the Hardhat
 // Runtime Environment as second argument
@@ -38,17 +39,37 @@ module.exports = {
     compilers: [
       {
         version: "0.8.10",
+          settings: {
+            optimizer: {
+                enabled: true,
+                runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            },
+            // outputSelection: {
+            //     "*": {
+            //         "*": ["storageLayout"],
+            //     },
+            // },
+        },
       },
       {
-        version: "0.8.0",
+        version: "0.8.4",
+            settings: {
+              optimizer: {
+                  enabled: true,
+                  runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+              },
+          },
+      },
+      {
+        version: "0.8.1",
+          settings: {
+            optimizer: {
+                enabled: true,
+                runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            },
+        },
       },
     ],
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
-      },
-    },
     // paths: {
     //   sources: "./contracts",
     //   tests: "./test",
@@ -59,4 +80,10 @@ module.exports = {
       timeout: 40000,
     },
   },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: false,
+    strict: true
+  }
 };

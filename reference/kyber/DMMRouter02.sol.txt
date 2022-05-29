@@ -16,7 +16,7 @@ contract DMMRouter02 is IDMMRouter02 {
 
     address public immutable override factory;
     IWETH public immutable override weth;
-    function IWETH() public view returns(IWETH)
+    function IWETH() public view returns(IWETH);
 
     modifier ensure(uint256 deadline) {
         require(deadline >= block.timestamp, "DMMRouter: EXPIRED");

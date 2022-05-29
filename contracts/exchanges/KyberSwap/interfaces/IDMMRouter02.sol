@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.0;
+pragma solidity 0.8.4;
 
 import "./IDMMRouter01.sol";
+import "../../../interfaces/IWETH.sol";
 
 interface IDMMRouter02 is IDMMRouter01 {
+    function IWETH() external view returns(IWETH );
     function removeLiquidityETHSupportingFeeOnTransferTokens(
         IERC20 token,
         address pool,

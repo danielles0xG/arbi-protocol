@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@colors/colors@1.5.0":
+  "integrity" "sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ=="
+  "resolved" "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
+  "version" "1.5.0"
+
 "@ensdomains/ens@^0.4.4":
   "integrity" "sha512-JSvpj1iNMFjK6K+uVl4unqMoa9rf5jopb8cya5UGBWz23Nw8hSNT7efgUx4BTlAPAgpNlEioUfeTyQ6J9ZvTVw=="
   "resolved" "https://registry.npmjs.org/@ensdomains/ens/-/ens-0.4.5.tgz"
@@ -2200,6 +2205,14 @@
     "escape-string-regexp" "^1.0.5"
     "supports-color" "^5.3.0"
 
+"chalk@^4.0.0":
+  "integrity" "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="
+  "resolved" "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz"
+  "version" "4.1.2"
+  dependencies:
+    "ansi-styles" "^4.1.0"
+    "supports-color" "^7.1.0"
+
 "chalk@^4.1.0":
   "integrity" "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="
   "resolved" "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz"
@@ -2291,6 +2304,15 @@
   "integrity" "sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A=="
   "resolved" "https://registry.npmjs.org/clean-stack/-/clean-stack-2.2.0.tgz"
   "version" "2.2.0"
+
+"cli-table3@^0.6.0":
+  "integrity" "sha512-QyavHCaIC80cMivimWu4aWHilIpiDpfm3hGmqAmXVL1UsnbLuBSMd21hTX6VY4ZSDSM73ESLeF8TOYId3rBTbw=="
+  "resolved" "https://registry.npmjs.org/cli-table3/-/cli-table3-0.6.2.tgz"
+  "version" "0.6.2"
+  dependencies:
+    "string-width" "^4.2.0"
+  optionalDependencies:
+    "@colors/colors" "1.5.0"
 
 "cliui@^3.2.0":
   "integrity" "sha1-EgYBU3qRbSmUD5NNo7SNWFo5IT0="
@@ -3208,9 +3230,8 @@
     "@ethereum-waffle/provider" "^3.4.4"
     "ethers" "^5.0.1"
 
-"ethereumjs-abi@^0.6.8", "ethereumjs-abi@0.6.8":
-  "integrity" "sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA=="
-  "resolved" "https://registry.npmjs.org/ethereumjs-abi/-/ethereumjs-abi-0.6.8.tgz"
+"ethereumjs-abi@^0.6.8", "ethereumjs-abi@0.6.8", "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+  "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git#ee3994657fa7a427238e6ba92a84d0b529bbcde0"
   "version" "0.6.8"
   dependencies:
     "bn.js" "^4.11.8"
@@ -3223,12 +3244,6 @@
   dependencies:
     "bn.js" "^4.10.0"
     "ethereumjs-util" "^4.3.0"
-
-"ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
-  "version" "0.6.8"
-  dependencies:
-    "bn.js" "^4.11.8"
-    "ethereumjs-util" "^6.0.0"
 
 "ethereumjs-account@^2.0.3":
   "integrity" "sha512-bgDojnXGjhMwo6eXQC0bY6UK2liSFUSMwwylOmQvZbSl/D7NXQ3+vrGO46ZeOgjGfxXmgIeVNDIiHw7fNZM4VA=="
@@ -4196,6 +4211,14 @@
   dependencies:
     "ajv" "^6.12.3"
     "har-schema" "^2.0.0"
+
+"hardhat-contract-sizer@^2.5.1":
+  "integrity" "sha512-28yRb73e30aBVaZOOHTlHZFIdIasA/iFunIehrUviIJTubvdQjtSiQUo2wexHFtt71mQeMPP8qjw2sdbgatDnQ=="
+  "resolved" "https://registry.npmjs.org/hardhat-contract-sizer/-/hardhat-contract-sizer-2.5.1.tgz"
+  "version" "2.5.1"
+  dependencies:
+    "chalk" "^4.0.0"
+    "cli-table3" "^0.6.0"
 
 "hardhat-dependency-compiler@^1.1.2":
   "integrity" "sha512-LVnsPSZnGvzWVvlpewlkPKlPtFP/S9V41RC1fd/ygZc4jkG8ubNlfE82nwiGw5oPueHSmFi6TACgmyrEOokK8w=="
@@ -7808,6 +7831,11 @@
   "integrity" "sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c="
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
+
+"typescript@>=3.7.0":
+  "integrity" "sha512-Mamb1iX2FDUpcTRzltPxgWMKy3fhg0TN378ylbktPGPK/99KbDtMQ4W1hwgsbPAsG3a0xKa1vmw4VKZQbkvz5A=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.7.2.tgz"
+  "version" "4.7.2"
 
 "typewise-core@^1.2", "typewise-core@^1.2.0":
   "integrity" "sha1-l+uRgFx/VdL5QXSPpQ0xXZke8ZU="
