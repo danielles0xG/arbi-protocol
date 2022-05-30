@@ -23,6 +23,7 @@ Research critirea:
      https://dev.balancer.fi/guides/swaps/single-swaps (single swap)
      https://dev.balancer.fi/references/contracts/deployment-addresses (address table)
  
+ 
 ### QUICKSWAP ####
 
  1.- https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol
@@ -30,6 +31,7 @@ Research critirea:
  3.- UniswapV2Router02
  4.- NA
  5.- https://docs.quickswap.exchange/guides/smart-contract-integration/02-trading-from-a-smart-contract
+
 
 ### DFYN ####
 
@@ -40,3 +42,12 @@ Research critirea:
      fantom:"0x2724B9497b2cF3325C6BE3ea430b3cec34B5Ef2d",
      arbitrum:"0xaedE1EFe768bD8A1663A7608c63290C60B85e71c"
  5.- https://docs.dfyn.network/technical/contracts
+
+
+### GRAVITY FINANCE ####
+
+ 1.- https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol
+ 2.- 0x57dE98135e8287F163c59cA4fF45f1341b680248
+ 3.- UniswapV2Router02
+ 4.- NA
+ 5.- https://inthenextversion.gitbook.io/gravity-finance/
