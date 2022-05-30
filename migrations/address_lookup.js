@@ -1,4 +1,9 @@
 module.exports.BALANCERV2 = {
+  router: {
+    matic: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
+  },
+};
+module.exports.BALANCERV2 = {
   vault: {
     matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     ethereum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
