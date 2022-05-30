@@ -4,14 +4,21 @@ Flash loan arbitrage strategy.
 
 - Flash loan providers
     - Aave
-- Exchanges
+- Exchanges we are currently aggregating
+
+    - Gravityfinance
+    - Dfyn
+    - balancer
+    - quickswap
+    - sushiswap
+    - Uniswap V3
+
+Other Exchanges not yet in bot:
     - 1Inch
     - KyberSwap
-    - Uniswap V3 (v2 tbd)
-    - SushiSwap (tbd)
+    - Uniswa (v2 tbd)
     - Dodo
     - ParaSwap
-    - Balancer
 
 ### Testing
  - Polygon mainnet fork
