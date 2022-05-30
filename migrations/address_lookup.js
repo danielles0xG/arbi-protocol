@@ -1,4 +1,4 @@
-module.exports.BALANCERV2 = {
+module.exports.QUICKSWAP = {
   router: {
     matic: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
   },
