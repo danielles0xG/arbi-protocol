@@ -14,7 +14,7 @@ Research critirea:
  1.- https://github.com/balancer-labs/balancer-v2-monorepo/tree/weighted-deployment/contracts/vault
  2.- 0xBA12222222228d8Ba445958a75a0704d566BF2C8 (Vault)
  3.- Vault
- 4.-
+ 4.- Same Vault address for all chains.
  5.- https://dev.balancer.fi/guides/guided-tour-of-balancer-vault/episode-1-the-batchswap (Vault guide( Batch swaps))
      https://dev.balancer.fi/guides/swaps/single-swaps (single swap)
      https://dev.balancer.fi/references/contracts/deployment-addresses (address table)
