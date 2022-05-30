@@ -1,0 +1,9 @@
+DEX SWAPS INTEGRATIONS
+
+Research critirea:
+
+- GITHUB URL : Protocol Smart contracts github repo
+- Main contract to call the swap function:
+    - Name of contract
+    - Addresses of this contract on each chain they offer service
+    - URL of the swap methods docuemntation, technical specification (menaing of params to pass to swap)
