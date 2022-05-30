@@ -13,7 +13,7 @@ Flash loan arbitrage strategy.
     - sushiswap
     - Uniswap V3
 
-Other Exchanges not yet in bot:
+- Other Exchanges not yet in bot:
     - 1Inch
     - KyberSwap
     - Uniswa (v2 tbd)
