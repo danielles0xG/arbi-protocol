@@ -12,10 +12,10 @@ Research critirea:
  ### BALANCER ###
  
  1.- https://github.com/balancer-labs/balancer-v2-monorepo/tree/weighted-deployment/contracts/vault
- 2.-matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    eth:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    optimism:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 
+ 2.- matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+     eth:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+     optimism:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+     arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 
 
  3.- Vault
  4.- Same Vault address for all chains.
@@ -23,12 +23,12 @@ Research critirea:
      https://dev.balancer.fi/guides/swaps/single-swaps (single swap)
      https://dev.balancer.fi/references/contracts/deployment-addresses (address table)
  
-### DEX2 ####
+### QUICKSWAP ####
 
- 1.-
- 2.-
- 3.-
- 4.-
- 5.-
+ 1.- https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol
+ 2.- 0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff
+ 3.- UniswapV2Router02
+ 4.- NA
+ 5.- https://docs.quickswap.exchange/guides/smart-contract-integration/02-trading-from-a-smart-contract
 
 
