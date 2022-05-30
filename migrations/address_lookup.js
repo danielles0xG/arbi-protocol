@@ -65,3 +65,12 @@ module.exports.ASSETS = {
     WMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", // 18 decimals
   },
 };
+
+module.exports.Balancer v2 = {
+  Vault: {
+    matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    Eth:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    optimism:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 "
+  },
+};
