@@ -147,6 +147,11 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
             );
     }
 
+    function deposit() external payable onlyOwner returns(uint256){
+        require(msg.value > 0, "Gascosts are high come on!");
+        return address(this).balance;
+    }
+
     fallback() external payable {
         revert();
     }

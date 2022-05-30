@@ -5,14 +5,14 @@ import "./interfaces/IUniswapV2Router02.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "../../interfaces/IExchange.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 
 contract UniswapV2 is OwnableUpgradeable,IExchange{
 
     IUniswapV2Router02 public _uniswapRouter;
-    function init(address _router)public initializer {
-        _uniswapRouter = IUniswapV2Router02(_router);
+    function initialize(address router_) external initializer {
+        __Ownable_init();
+        _uniswapRouter = IUniswapV2Router02(router_);
     }
 
     function swapExactTokensForTokens(
@@ -25,9 +25,8 @@ contract UniswapV2 is OwnableUpgradeable,IExchange{
                 uint160 loopLimit
         ) external override returns (uint256) {
       
-        SafeERC20.safeTransferFrom(IERC20(path[0]),_msgSender(),address(this),amountIn);
-        SafeERC20.safeApprove(IERC20(path[0]), address(_uniswapRouter), amountIn);
-
+        IERC20(path[0]).transferFrom(_msgSender(),address(this),amountIn);
+        IERC20(path[0]).approve(address(_uniswapRouter), amountIn);
         address[] memory pairs;
 
         if (path[1] == address(0)) {

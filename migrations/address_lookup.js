@@ -7,7 +7,7 @@ module.exports.AAVE = {
     arbitrum:"0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb"
   },
 };
-module.exports.SUHI = {
+module.exports.SUSHI = {
   router: {
     matic: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
     avax:"0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
@@ -31,7 +31,7 @@ module.exports.UNISWAP_V2 = {
     ethereum: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
     optimism:"0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
     arbitrum:"0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-    matic: "",
+    matic: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
     avax:"",
   },
   factory: {

@@ -2,24 +2,24 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 require('hardhat-contract-sizer');
-
+require('@openzeppelin/hardhat-upgrades');
 // Task action function receives the Hardhat
 // Runtime Environment as second argument
 
 
 module.exports = {
   defaultNetwork: "hardhat",
-  paths: {
-    sources: './contracts',
-    tests: './test',
-    artifacts: './artifacts',
-    cache: './cache'
-  },
+  // paths: {
+  //   sources: './contracts',
+  //   tests: './test',
+  //   artifacts: './artifacts',
+  //   cache: './cache'
+  // },
   networks: {
-    development: {
+    dev: {
       url: "http://localhost:8545",
       gasPrice: "auto",
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: ['0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',process.env.PRIVATE_KEY],
     },
 
     matic: {
@@ -68,6 +68,15 @@ module.exports = {
                 runs: 200 // 1000000, reduces costs in tx but increases them in deployment
             },
         },
+      },
+      {
+        version: "0.6.12",
+            settings: {
+              optimizer: {
+                  enabled: true,
+                  runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+              },
+          },
       },
     ],
     // paths: {
