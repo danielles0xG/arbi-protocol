@@ -1,3 +1,11 @@
+module.exports.BALANCERV2 = {
+  Vault: {
+    matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    ethereum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    optimism:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 "
+  },
+};
 module.exports.AAVE = {
   poolAddressesProvider: {
     matic: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
@@ -66,11 +74,4 @@ module.exports.ASSETS = {
   },
 };
 
-module.exports.Balancer v2 = {
-  Vault: {
-    matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    Eth:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    optimism:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 "
-  },
-};
+
