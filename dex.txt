@@ -39,4 +39,4 @@ Research critirea:
  4.- okc:"0x34686CBF7229ed0bff2Fbe7ED2CFC916317764f6",
      fantom:"0x2724B9497b2cF3325C6BE3ea430b3cec34B5Ef2d",
      arbitrum:"0xaedE1EFe768bD8A1663A7608c63290C60B85e71c"
- 5.- https://docs.quickswap.exchange/guides/smart-contract-integration/02-trading-from-a-smart-contract
+ 5.- https://docs.dfyn.network/technical/contracts
