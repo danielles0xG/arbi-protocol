@@ -12,14 +12,10 @@ Research critirea:
  ### BALANCER ###
  
  1.- https://github.com/balancer-labs/balancer-v2-monorepo/tree/weighted-deployment/contracts/vault
- 2.- module.exports.Balancer v2 = {
-  Vault: {
-    matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    Eth:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+ 2.-matic: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+    eth:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     optimism:"0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-    arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 "
-  },
-};
+    arbitrum:"0xBA12222222228d8Ba445958a75a0704d566BF2C8 
 
  3.- Vault
  4.- Same Vault address for all chains.
