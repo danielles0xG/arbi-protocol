@@ -2,20 +2,29 @@ DEX SWAPS INTEGRATIONS
 
 Research critirea:
 
-- GITHUB URL : Protocol Smart contracts github repo
-- Main contract to call the swap function:
-    - Name of contract
-    - Addresses of this contract on each chain they offer service
-    - URL of the swap methods docuemntation, technical specification (menaing of params to pass to swap)
+   1.- GITHUB URL : Protocol Smart contracts github repo
+   2.- Main contract to call the swap function:
+   3.- Name of contract
+   4.- Addresses of this contract on each chain they offer service
+   5.- URL of the swap methods docuemntation, technical specification (menaing of params to pass to swap)
     
     
  ### BALANCER ###
  
+ 1.- https://github.com/balancer-labs/balancer-v2-monorepo/tree/weighted-deployment/contracts/vault
+ 2.- 0xBA12222222228d8Ba445958a75a0704d566BF2C8 (Vault)
+ 3.- Vault
+ 4.-
+ 5.- https://dev.balancer.fi/guides/guided-tour-of-balancer-vault/episode-1-the-batchswap (Vault guide( Batch swaps))
+     https://dev.balancer.fi/guides/swaps/single-swaps (single swap)
+     https://dev.balancer.fi/references/contracts/deployment-addresses (address table)
+ 
+### DEX2 ####
+
  1.-
  2.-
  3.-
- 
-### DEX2 ####
-1.-
-2.-
-3.-
+ 4.-
+ 5.-
+
+
