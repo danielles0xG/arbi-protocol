@@ -4,6 +4,14 @@ Flash loan arbitrage strategy.
 
 - Flash loan providers
     - Aave
+      - Token list avaiable for Flash loan on Polygon
+        - Aave
+        - Dai
+        - USDC
+        - USDT
+        - WBTC
+        - WETH
+        - WMATIC
 - Exchanges we are currently aggregating
 
     - Gravityfinance
