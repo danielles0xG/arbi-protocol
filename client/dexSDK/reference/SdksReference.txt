@@ -11,3 +11,21 @@
 - if they have the graph - find the url and the object that contain the price
 - SDK can have quoter to simultate the swap and get exact minout to expect from swap
 - SDK can have the Alpha router to quote the optimal route
+
+
+
+
+## SushiSwap SDKs references 
+
+## Github - https://github.com/sushiswap/sushiswap-sdk , Docs - Uniswap 
+- 0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac
+
+
+
+
+## QuickSwap SDK 
+
+## Github - https://github.com/QuickSwap/QuickSwap-sdk/blob/master/README.md , Docs - Uniswap
+- 
+- 
+
