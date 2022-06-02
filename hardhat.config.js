@@ -19,12 +19,15 @@ module.exports = {
     dev: {
       url: "http://localhost:8545",
       gasPrice: "auto",
-      accounts: ['0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',process.env.PRIVATE_KEY],
+      accounts: [
+        '0xaf54683c9883153d26137b90fb28de33435e3dd103bb3b1d8167b0b4e48ced56',
+        process.env.PRIVATE_KEY
+      ],
     },
 
     matic: {
       url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}`,
-      accounts: ["760750760f2159ac85cd2fd0c351912154984a39d6c63165b784f3a91839cb6a"],
+      accounts: [process.env.PRIVATE_KEY],
     },
     mumbai: {
       url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,

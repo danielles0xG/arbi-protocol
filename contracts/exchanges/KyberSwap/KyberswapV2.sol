@@ -72,7 +72,7 @@ contract KyberswapV2 is OwnableUpgradeable, IExchange {
             uint112 _vReserve1,
             uint112 reserve0,
             uint112 reserve1,
-            uint256 feeInPrecisio
+            uint256 feeInPrecision
         ){
         (_vReserve0,
          _vReserve1,

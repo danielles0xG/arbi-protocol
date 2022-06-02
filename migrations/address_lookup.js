@@ -51,6 +51,13 @@ module.exports.KYBER = {
     bsc:"0x78df70615ffc8066cc0887917f2Cd72092C86409",
     arbitrum:"0xEaE47c5D99f7B31165a7f0c5f7E0D6afA25CFd55"
   },
+  factory:{
+    matic:"0x5f1fe642060b5b9658c15721ea22e982643c095c",
+    avax:"0x10908C875D865C66f271F5d3949848971c9595C9",
+    fantom:"0x78df70615ffc8066cc0887917f2Cd72092C86409",
+    bsc:"0x878dFE971d44e9122048308301F540910Bbd934c",
+    arbitrum:"0xD9bfE9979e9CA4b2fe84bA5d4Cf963bBcB376974"
+  }
 };
 module.exports.UNISWAP_V2 = {
   router: {
@@ -91,5 +98,3 @@ module.exports.ASSETS = {
     WMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", // 18 decimals
   },
 };
-
-

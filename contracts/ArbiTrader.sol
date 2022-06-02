@@ -3,7 +3,7 @@ pragma solidity 0.8.4;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import {DataTypes} from "./loans/utils/DataTypes.sol";
 import "./loans/aaveV3/interfaces/IFlashLoanSimpleReceiver.sol";
 import "./loans/aaveV3/interfaces/IPoolAddressesProvider.sol";
@@ -11,17 +11,19 @@ import "./AbstractExchange.sol";
 import "./interfaces/IExchangeRegistry.sol";
 import "./interfaces/IExchange.sol";
 
+
 /**
  * @notice Functional contract is FlashLoanReceiverBase
  * @dev Contract will NOT store funds or store any given state.
  */
-contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
+contract ArbiTrader is IFlashLoanSimpleReceiver,ReentrancyGuard {
     IPoolAddressesProvider public aavePoolProvider;
     IPool public aavePool;
 
     address public owner;
     address public treassury;
     address public dexRegistry;
+    uint160 public _loopLimit;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Only Owner");
@@ -31,13 +33,21 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     constructor(
         address _aavePoolProvider,
         address _treassury,
-        address _dexRegistry
+        address _dexRegistry,
+        uint160 loopLimit_
     ) {
         owner = msg.sender;
         treassury = payable(_treassury);
         dexRegistry = _dexRegistry;
         aavePoolProvider = IPoolAddressesProvider(_aavePoolProvider);
         aavePool = IPool(aavePoolProvider.getPool());
+        _loopLimit = loopLimit_;
+    }
+
+    /// @dev Deposit funds to cover gas costs 
+    function deposit() external payable onlyOwner returns(uint256){
+        require(msg.value > 0, "Gas costs are high come on!");
+        return address(this).balance;
     }
 
     /**
@@ -50,9 +60,8 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
         address _asset,
         uint256 _amount,
         bytes calldata _operations
-    ) external onlyOwner returns (bool) {
+    ) external onlyOwner {
         _initFlashLoan(_asset, _amount, _operations);
-        return true;
     }
 
     function _initFlashLoan(
@@ -81,10 +90,10 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
             "AT1 Loan Transfer Fail"
         );
         // Avee Pool calling executeOperation function on out contract
-            // _executeOperation();
+           _executeOperation(_operations,_loopLimit);
         // Repay: Approve aave pool to take loan amount + fees
-        SafeERC20.safeApprove(
-            IERC20(_asset),
+
+        IERC20(_asset).approve(
             address(aavePool),
             _amount + aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL()
         );
@@ -96,18 +105,18 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
     * @dev Loan provider lending criteria
     * @param _operations Array of encoded operarions (swaps)
      */
-    function _executeOperation(bytes[] memory _operations, uint160 _loopLimit) internal {
+    function _executeOperation(bytes calldata _operations, uint160 _loopLimit) internal {
+        
         // start multicall
-        for (uint256 i = 0; i < _loopLimit + 1; i++) {
+        // for (uint256 i = 0; i < _loopLimit + 1; i++) {
             (
                 string memory _dexSymbol,
                 uint256 _amountIn,
                 uint256 _amountOut,
                 address[] memory _poolsPath, // kyberOnly
                 address[] memory _path,
-                address _to,
                 uint256 _swapTimeout
-            ) = _decodeOperation(_operations[i]);
+            ) = _decodeOperation(_operations);
 
             address _dexAddress = IExchangeRegistry(dexRegistry).exchangeRegistryMap(_dexSymbol);
             IERC20(_path[0]).approve(address(_dexAddress),_amountIn);
@@ -122,7 +131,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
                  _swapTimeout,
                  _loopLimit
             );
-        }
+        // }
     }
 
     function _decodeOperation(bytes memory _operation)
@@ -132,7 +141,6 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
                  uint256,
                  address[] memory,
                  address[] memory,
-                 address,
                  uint256){
         return
             abi.decode(
@@ -142,15 +150,24 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, AbstractExchange {
                  uint256,
                  address[],
                  address[],
-                 address,
                  uint256)
             );
     }
 
-    function deposit() external payable onlyOwner returns(uint256){
-        require(msg.value > 0, "Gascosts are high come on!");
-        return address(this).balance;
+    function _withdrawProfit(address _asset) internal onlyOwner {
+        uint256 assetBalance = IERC20(_asset).balanceOf(address(this));
+        require(assetBalance > 0 , "No profit yet for this asset.");
+        IERC20(_asset).approve(address(treassury),assetBalance);
+        IERC20(_asset).transferFrom(address(this),address(treassury),assetBalance);
     }
+
+    function _withdrawNativeProfit() internal onlyOwner nonReentrant {
+        uint256 _nativeTokenBalance = address(this).balance;
+        require(_nativeTokenBalance > 0 , "No profit yet for this native currency.");
+        (bool _success, ) = treassury.call{value: _nativeTokenBalance}(" ");
+        require(_success);
+    }
+
 
     fallback() external payable {
         revert();
