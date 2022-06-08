@@ -21,19 +21,19 @@ module.exports = {
       gasPrice: "auto",
       accounts: [
         '0xaf54683c9883153d26137b90fb28de33435e3dd103bb3b1d8167b0b4e48ced56',
-        process.env.PRIVATE_KEY
+        // process.env.PRIVATE_KEY
       ],
     },
 
-    matic: {
-      url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}`,
-      accounts: [process.env.PRIVATE_KEY],
-    },
-    mumbai: {
-      url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,
-      // wss://polygon-mumbai.infura.io/ws/v3/${process.env.PROJECT_ID}
-      accounts: [process.env.PRIVATE_KEY],
-    },
+    // matic: {
+    //   // url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}`,
+    //   accounts: [process.env.PRIVATE_KEY],
+    // },
+    // mumbai: {
+    //   // url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,
+    //   // wss://polygon-mumbai.infura.io/ws/v3/${process.env.PROJECT_ID}
+    //   accounts: [process.env.PRIVATE_KEY],
+    // },
   },
   etherscan: {
     apiKey: process.env.POLYGONSCAN_API_KEY,
@@ -42,44 +42,62 @@ module.exports = {
     compilers: [
       {
         version: "0.8.10",
-          settings: {
-            optimizer: {
-                enabled: true,
-                runs: 200 // 1000000, reduces costs in tx but increases them in deployment
-            },
-            // outputSelection: {
-            //     "*": {
-            //         "*": ["storageLayout"],
-            //     },
-            // },
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+          },
+          // outputSelection: {
+          //     "*": {
+          //         "*": ["storageLayout"],
+          //     },
+          // },
         },
       },
       {
         version: "0.8.4",
-            settings: {
-              optimizer: {
-                  enabled: true,
-                  runs: 200 // 1000000, reduces costs in tx but increases them in deployment
-              },
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
           },
+        },
       },
       {
         version: "0.8.1",
-          settings: {
-            optimizer: {
-                enabled: true,
-                runs: 200 // 1000000, reduces costs in tx but increases them in deployment
-            },
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+          },
+        },
+      },
+      {
+        version: "0.7.0",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+          },
+        },
+      },
+      {
+        version: "0.8.0",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+          },
         },
       },
       {
         version: "0.6.12",
-            settings: {
-              optimizer: {
-                  enabled: true,
-                  runs: 200 // 1000000, reduces costs in tx but increases them in deployment
-              },
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
           },
+        },
       },
     ],
     // paths: {
