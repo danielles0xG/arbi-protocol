@@ -6,4 +6,54 @@ Research critirea:
    2.- Main contract to call the swap function:
    3.- Name of contract
    4.- Addresses of this contract on each chain they offer service
-   5.- URL of the swap methods docuemntation, technical specification (menaing of params to pass to swap)
+   5.- URL of the swap methods documentation, technical specification (meaning of params to pass to swap)
+
+
+### PancakeSwap V2 ### 
+
+1. https://github.com/pancakeswap/pancake-smart-contracts/blob/master/projects/exchange-protocol/contracts/
+2. 0x10ED43C718714eb63d5aA57B78B54704E256024E
+3. PancakeRouter.sol 
+4. Only BSC: 0x10ED43C718714eb63d5aA57B78B54704E256024E
+5. https://docs.pancakeswap.finance/code/smart-contracts/pancakeswap-exchange/router-v2
+
+### ApeSwap ###
+
+1. https://github.com/ApeSwapFinance/apeswap-swap-core/blob/master/contracts/
+2. 0xcF0feBd3f17CEf5b47b0cD257aCf6025c5BFf3b7
+3. ApeRouter.sol 
+4. /
+5. https://apeswap.gitbook.io/apeswap-finance/where-dev/smart-contracts 
+https://docs.pancakeswap.finance/code/smart-contracts/pancakeswap-exchange/router-v2
+
+### Biswap ###
+
+1. https://github.com/biswap-org/core/tree/main/contracts
+2. 0x3a6d8cA21D1CF76F653A67577FA0D27453350dD8
+3. BiswapRouter02.sol
+4. /
+5. https://docs.pancakeswap.finance/code/smart-contracts/pancakeswap-exchange/router-v2
+
+### MDEX ###
+
+1. https://github.com/mdexSwap/contracts/tree/master/bscContracts
+2. 0x0384E9ad329396C3A6A401243Ca71633B2bC4333
+3. MdexRouter.sol (on Github is Router.sol)
+4. Has HECO chain, Not Applicable
+5. https://mdexdoc.gitbook.io/doc/ 
+
+### BabySwap ###
+
+1. https://github.com/babyswap/baby-swap-contract/tree/main/contracts
+2. 0x325E343f1dE602396E256B67eFd1F61C3A6B38Bd
+3. BabyRouter.sol & BabyRouter02.sol 
+4. / 
+5. https://docs.babyswap.finance/developers/smart-contracts 
+
+### Nomiswap ###
+
+1. https://github.com/nominex/nomiswap-periphery-contracts/tree/master/contracts
+2. 0xd654953d746f0b114d1f85332dc43446ac79413d
+3. NomiswapRouter.sol
+4. / 
+5. Ref Pancakeswap docs https://nomiswap.gitbook.io/home/ 
