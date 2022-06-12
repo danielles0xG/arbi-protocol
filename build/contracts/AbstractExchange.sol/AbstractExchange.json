@@ -1,0 +1,443 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_baseAsset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_loanAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "InitStrategy",
+      "type": "event"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/AbstractExchange.sol",
+    "id": 32,
+    "exportedSymbols": {
+      "AbstractExchange": [
+        31
+      ],
+      "IERC20": [
+        27258
+      ],
+      "IExchange": [
+        3572
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:453:0",
+    "nodes": [
+      {
+        "id": 1,
+        "nodeType": "PragmaDirective",
+        "src": "37:22:0",
+        "literals": [
+          "solidity",
+          "0.8",
+          ".4"
+        ]
+      },
+      {
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "src": "61:36:0",
+        "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/interfaces/IExchange.sol",
+        "file": "./interfaces/IExchange.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 32,
+        "sourceUnit": 3573,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 31,
+        "nodeType": "ContractDefinition",
+        "src": "98:391:0",
+        "nodes": [
+          {
+            "id": 9,
+            "nodeType": "StructDefinition",
+            "src": "138:90:0",
+            "canonicalName": "AbstractExchange.Pool",
+            "members": [
+              {
+                "constant": false,
+                "id": 4,
+                "mutability": "mutable",
+                "name": "token0",
+                "nameLocation": "168:6:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "160:14:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 3,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "160:7:0",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 6,
+                "mutability": "mutable",
+                "name": "token1",
+                "nameLocation": "192:6:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "184:14:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 5,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "184:7:0",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8,
+                "mutability": "mutable",
+                "name": "poolFee",
+                "nameLocation": "214:7:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "208:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint8",
+                  "typeString": "uint8"
+                },
+                "typeName": {
+                  "id": 7,
+                  "name": "uint8",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "208:5:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Pool",
+            "nameLocation": "145:4:0",
+            "scope": 31,
+            "visibility": "public"
+          },
+          {
+            "id": 17,
+            "nodeType": "StructDefinition",
+            "src": "233:94:0",
+            "canonicalName": "AbstractExchange.Swap",
+            "members": [
+              {
+                "constant": false,
+                "id": 12,
+                "mutability": "mutable",
+                "name": "pool",
+                "nameLocation": "260:4:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 17,
+                "src": "255:9:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Pool_$9_storage_ptr",
+                  "typeString": "struct AbstractExchange.Pool"
+                },
+                "typeName": {
+                  "id": 11,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 10,
+                    "name": "Pool",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 9,
+                    "src": "255:4:0"
+                  },
+                  "referencedDeclaration": 9,
+                  "src": "255:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Pool_$9_storage_ptr",
+                    "typeString": "struct AbstractExchange.Pool"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 14,
+                "mutability": "mutable",
+                "name": "amountIn",
+                "nameLocation": "282:8:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 17,
+                "src": "274:16:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 13,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "274:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 16,
+                "mutability": "mutable",
+                "name": "amountOutMin",
+                "nameLocation": "308:12:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 17,
+                "src": "300:20:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 15,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "300:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Swap",
+            "nameLocation": "240:4:0",
+            "scope": 31,
+            "visibility": "public"
+          },
+          {
+            "id": 24,
+            "nodeType": "StructDefinition",
+            "src": "333:86:0",
+            "canonicalName": "AbstractExchange.ArbitrageOperation",
+            "members": [
+              {
+                "constant": false,
+                "id": 19,
+                "mutability": "mutable",
+                "name": "dexSymbol",
+                "nameLocation": "376:9:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 24,
+                "src": "369:16:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 18,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "369:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 23,
+                "mutability": "mutable",
+                "name": "operations",
+                "nameLocation": "402:10:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 24,
+                "src": "395:17:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_struct$_Swap_$17_storage_$dyn_storage_ptr",
+                  "typeString": "struct AbstractExchange.Swap[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 21,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 20,
+                      "name": "Swap",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 17,
+                      "src": "395:4:0"
+                    },
+                    "referencedDeclaration": 17,
+                    "src": "395:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Swap_$17_storage_ptr",
+                      "typeString": "struct AbstractExchange.Swap"
+                    }
+                  },
+                  "id": 22,
+                  "nodeType": "ArrayTypeName",
+                  "src": "395:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_Swap_$17_storage_$dyn_storage_ptr",
+                    "typeString": "struct AbstractExchange.Swap[]"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "ArbitrageOperation",
+            "nameLocation": "340:18:0",
+            "scope": 31,
+            "visibility": "public"
+          },
+          {
+            "id": 30,
+            "nodeType": "EventDefinition",
+            "src": "427:60:0",
+            "anonymous": false,
+            "name": "InitStrategy",
+            "nameLocation": "433:12:0",
+            "parameters": {
+              "id": 29,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 26,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_baseAsset",
+                  "nameLocation": "454:10:0",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 30,
+                  "src": "446:18:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 25,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "446:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 28,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_loanAmount",
+                  "nameLocation": "474:11:0",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 30,
+                  "src": "466:19:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 27,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "466:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "445:41:0"
+            }
+          }
+        ],
+        "abstract": true,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          31
+        ],
+        "name": "AbstractExchange",
+        "nameLocation": "116:16:0",
+        "scope": 32,
+        "usedErrors": []
+      }
+    ],
+    "license": "AGPL-3.0"
+  }
+}

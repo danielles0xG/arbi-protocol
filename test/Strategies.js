@@ -19,6 +19,7 @@ module.exports.STRATEGIES = [
     poolFee: null, // univ2 no need for pool
     amountIn: "TOTAL_LOAN_AMOUNT", // in case we want to fraction the borrowed amount
     amountOutMinimum: LOAN_AMOUNT - ethers.utils.formatUnits(02, "gwei"), // 2% slippage
+    
   },
 ];
 

@@ -1,28 +1,29 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.4;
 
-import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+
 import {DataTypes} from "./loans/utils/DataTypes.sol";
 import "./loans/aaveV3/interfaces/IFlashLoanSimpleReceiver.sol";
 import "./loans/aaveV3/interfaces/IPoolAddressesProvider.sol";
-import "./AbstractExchange.sol";
-import "./interfaces/IExchangeRegistry.sol";
-import "./interfaces/IExchange.sol";
+import "./interfaces/IERC20.sol";
 
+import "../lib/forge-std/src/console.sol";
 /**
  * @notice Functional contract is FlashLoanReceiverBase
  * @dev Contract will NOT store funds or store any given state.
  */
-contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
+contract ArbiTrader is IFlashLoanSimpleReceiver,ReentrancyGuard {
     IPoolAddressesProvider public aavePoolProvider;
     IPool public aavePool;
 
+    mapping(string => address) public _uniForkDexes;
+
+
     address public owner;
     address public treassury;
-    address public dexRegistry;
-    uint160 public _loopLimit;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Only Owner");
@@ -31,20 +32,20 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
 
     constructor(
         address _aavePoolProvider,
-        address _treassury,
-        address _dexRegistry,
-        uint160 loopLimit_
+        address _treassury
     ) {
         owner = msg.sender;
         treassury = payable(_treassury);
-        dexRegistry = _dexRegistry;
         aavePoolProvider = IPoolAddressesProvider(_aavePoolProvider);
         aavePool = IPool(aavePoolProvider.getPool());
-        _loopLimit = loopLimit_;
     }
 
-    /// @dev Deposit funds to cover gas costs
-    function deposit() external payable onlyOwner returns (uint256) {
+    function addUniForkDex(string memory _dexTicker, address _dexRouter) external{
+        _uniForkDexes[_dexTicker] = _dexRouter;
+    }
+
+    /// @dev Deposit funds to cover gas costs 
+    function deposit() external payable  returns(uint256){
         require(msg.value > 0, "Gas costs are high come on!");
         return address(this).balance;
     }
@@ -59,7 +60,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
         address _asset,
         uint256 _amount,
         bytes calldata _operations
-    ) external onlyOwner {
+    ) external  {
         _initFlashLoan(_asset, _amount, _operations);
     }
 
@@ -77,6 +78,10 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
         );
     }
 
+    function _logAssetBalance(string memory _msg, address _asset,address _of) internal {
+        console.log( _msg, IERC20(_asset).symbol(), ' is :::',IERC20(_asset).balanceOf(address(_of)) );
+    }
+
     function executeOperation(
         address _asset,
         uint256 _amount,
@@ -84,101 +89,126 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
         address _initiator,
         bytes calldata _operations
     ) external override returns (bool) {
+
+        _logAssetBalance('TRADER LOAN BALANCE ::: ', _asset,address(this));
+            
+
         require(
             IERC20(_asset).balanceOf(address(this)) >= _amount,
             "AT1 Loan Transfer Fail"
         );
         // Avee Pool calling executeOperation function on out contract
-        _executeOperation(_operations, _loopLimit);
+           _executeOperation(_asset,_operations);
         // Repay: Approve aave pool to take loan amount + fees
 
-        IERC20(_asset).approve(
-            address(aavePool),
-            _amount + aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL()
-        );
+        uint256 _payment = _amount + aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL();
+
+        console.log('Repaying the loan :::', _payment);
+        _logAssetBalance('Trader balance after repay :::', _asset, address(this));
+
+        IERC20(_asset).approve( address(aavePool), _payment);
+
+        uint256 loanAssetBalance = IERC20(_asset).balanceOf(address(this));
+
+        if(loanAssetBalance > _payment){
+            console.log("PROFIT ::: ",loanAssetBalance - _payment);
+        }else{
+            console.log("MISSING ::: ",_payment - loanAssetBalance);
+        }
+
         return true;
     }
 
+
+
     /**
-     * @notice IFlashLoanSimpleReceiver implementation
-     * @dev Loan provider lending criteria
-     * @param _operations Array of encoded operarions (swaps)
+    * @notice IFlashLoanSimpleReceiver implementation
+    * @dev Loan provider lending criteria
+    * @param _strategy Array of encoded operarions (swaps)
      */
-    function _executeOperation(bytes calldata _operations, uint160 _loopLimit)
-        internal
-    {
-        // start multicall
-        // for (uint256 i = 0; i < _loopLimit + 1; i++) {
-        (
-            string memory _dexSymbol,
-            uint256 _amountIn,
-            uint256 _amountOut,
-            address[] memory _poolsPath, // kyberOnly
-            address[] memory _path,
-            uint256 _swapTimeout
-        ) = _decodeOperation(_operations);
+    function _executeOperation(address _asset,bytes calldata _strategy) internal {
+            
+            (
+             string memory _dexSymbol_1,
+             address[] memory _path_1,
+             string memory _dexSymbol_2,
+             address[] memory _path_2
+             ) =  abi.decode( _strategy,(string, address[], string, address[] ));
+        
+            console.log("_dexSymbol_1:" ,_dexSymbol_1);
+            console.log('_path_1: ',_path_1[0]);
+          
+          
+            // SWAP 1
 
-        address _dexAddress = IExchangeRegistry(dexRegistry)
-            .exchangeRegistryMap(_dexSymbol);
-        IERC20(_path[0]).approve(address(_dexAddress), _amountIn);
-        require(_dexAddress != address(0), "Dex not found");
+            address _routerAddress_1 = _uniForkDexes[_dexSymbol_1];
 
-        IExchange(_dexAddress).swapExactTokensForTokens(
-            _amountIn,
-            _amountOut,
-            _poolsPath, // kyberOnly address []
-            _path, // IERC20 []
-            address(this),
-            _swapTimeout,
-            _loopLimit
-        );
-        // }
+            require(_asset == _path_1[0], "loan asset diff from first swap tokenA");
+            uint256 _amountIn_1 = IERC20(_asset).balanceOf(address(this));
+
+            uint256 _amountOut_1 = IUniswapV2Router02(_routerAddress_1).getAmountsOut(_amountIn_1, _path_1)[_path_1.length -1];
+
+            IERC20(_asset).approve(address(_routerAddress_1),_amountIn_1);
+            console.log('_amountIn_1: ',_amountIn_1);
+            console.log('_amountOut_1: ',_amountOut_1);
+            uint256 swapResult_1 = IUniswapV2Router02(_routerAddress_1).swapExactTokensForTokens(
+                    _amountIn_1,
+                    _amountOut_1,
+                    _path_1,
+                    address(this),
+                    block.timestamp)[_path_1.length -1];
+
+            console.log('swapResult_1: ',swapResult_1);
+            require(swapResult_1 > 0, 'swap1 failed.');
+            
+            // SWAP 2
+
+            if(IERC20(_path_1[_path_1.length-1]).balanceOf(address(this)) >= swapResult_1){
+        
+                address _routerAddress_2 = _uniForkDexes[_dexSymbol_2];
+
+                IERC20(_path_2[0]).approve(address(_routerAddress_2),_amountIn_1);
+
+                uint256 _amountIn_2 = swapResult_1;
+
+                uint256 _amountOut_2 = IUniswapV2Router02(_routerAddress_2).getAmountsOut(_amountIn_2, _path_2)[_path_2.length -1];
+                
+                console.log('_amountIn_2: ',swapResult_1);
+                console.log('_amountOut_2: ',_amountOut_2);
+                
+                uint256 swapResult_2 = IUniswapV2Router02(_routerAddress_2).swapExactTokensForTokens(
+                    _amountIn_2,
+                    _amountOut_2,
+                    _path_2,
+                    address(this),
+                    block.timestamp)[_path_2.length -1];
+
+                console.log('swapResult_2: ',swapResult_2);
+                require(swapResult_2 > 0, 'swap2 failed.');
+            }
+    
     }
 
-    function _decodeOperation(bytes memory _operation)
-        internal
-        returns (
-            string memory,
-            uint256,
-            uint256,
-            address[] memory,
-            address[] memory,
-            uint256
-        )
-    {
-        return
-            abi.decode(
-                (_operation),
-                (string, uint256, uint256, address[], address[], uint256)
-            );
-    }
 
-    function _withdrawProfit(address _asset) internal onlyOwner {
+    function _withdrawProfit(address _asset) internal  {
         uint256 assetBalance = IERC20(_asset).balanceOf(address(this));
-        require(assetBalance > 0, "No profit yet for this asset.");
-        IERC20(_asset).approve(address(treassury), assetBalance);
-        IERC20(_asset).transferFrom(
-            address(this),
-            address(treassury),
-            assetBalance
-        );
+        require(assetBalance > 0 , "No profit yet for this asset.");
+        IERC20(_asset).approve(address(treassury),assetBalance);
+        IERC20(_asset).transferFrom(address(this),address(treassury),assetBalance);
     }
 
-    function _withdrawNativeProfit() internal onlyOwner nonReentrant {
+    function _withdrawNativeProfit() internal  nonReentrant {
         uint256 _nativeTokenBalance = address(this).balance;
-        require(
-            _nativeTokenBalance > 0,
-            "No profit yet for this native currency."
-        );
+        require(_nativeTokenBalance > 0 , "No profit yet for this native currency.");
         (bool _success, ) = treassury.call{value: _nativeTokenBalance}(" ");
         require(_success);
     }
 
-    fallback() external payable {
-        revert();
-    }
 
-    receive() external payable {
-        revert();
+    fallback() external payable {
     }
+    receive() external payable {
+    } 
 }
+
+

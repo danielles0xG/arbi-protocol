@@ -1,0 +1,54 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122075f02a653d8579adf0f00731fb96e5fa8f72842129be3c379343cc8c2182858664736f6c63430008040033",
+    "sourceMap": "61:22:4:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x6080604052600080fdfea264697066735822122075f02a653d8579adf0f00731fb96e5fa8f72842129be3c379343cc8c2182858664736f6c63430008040033",
+    "sourceMap": "61:22:4:-:0;;;;;",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/exchanges/Balancer/BalancerV2.sol",
+    "id": 474,
+    "exportedSymbols": {
+      "BalancerV2": [
+        473
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:47:4",
+    "nodes": [
+      {
+        "id": 472,
+        "nodeType": "PragmaDirective",
+        "src": "37:22:4",
+        "literals": [
+          "solidity",
+          "0.8",
+          ".4"
+        ]
+      },
+      {
+        "id": 473,
+        "nodeType": "ContractDefinition",
+        "src": "61:22:4",
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          473
+        ],
+        "name": "BalancerV2",
+        "nameLocation": "70:10:4",
+        "scope": 474,
+        "usedErrors": []
+      }
+    ],
+    "license": "Unlicense"
+  }
+}

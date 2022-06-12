@@ -1,0 +1,246 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getDomainSeparator",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getNextNonce",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/exchanges/Balancer/Interfaces/ISignaturesValidator.sol",
+    "id": 531,
+    "exportedSymbols": {
+      "ISignaturesValidator": [
+        530
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "688:449:8",
+    "nodes": [
+      {
+        "id": 514,
+        "nodeType": "PragmaDirective",
+        "src": "688:22:8",
+        "literals": [
+          "solidity",
+          "0.8",
+          ".4"
+        ]
+      },
+      {
+        "id": 530,
+        "nodeType": "ContractDefinition",
+        "src": "808:328:8",
+        "nodes": [
+          {
+            "id": 521,
+            "nodeType": "FunctionDefinition",
+            "src": "910:62:8",
+            "documentation": {
+              "id": 516,
+              "nodeType": "StructuredDocumentation",
+              "src": "845:60:8",
+              "text": " @dev Returns the EIP712 domain separator."
+            },
+            "functionSelector": "ed24911d",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getDomainSeparator",
+            "nameLocation": "919:18:8",
+            "parameters": {
+              "id": 517,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "937:2:8"
+            },
+            "returnParameters": {
+              "id": 520,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 519,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 521,
+                  "src": "963:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 518,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "963:7:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "962:9:8"
+            },
+            "scope": 530,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 529,
+            "nodeType": "FunctionDefinition",
+            "src": "1066:68:8",
+            "documentation": {
+              "id": 522,
+              "nodeType": "StructuredDocumentation",
+              "src": "978:83:8",
+              "text": " @dev Returns the next nonce used by an address to sign messages."
+            },
+            "functionSelector": "90193b7c",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getNextNonce",
+            "nameLocation": "1075:12:8",
+            "parameters": {
+              "id": 525,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 524,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "1096:4:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 529,
+                  "src": "1088:12:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 523,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1088:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1087:14:8"
+            },
+            "returnParameters": {
+              "id": 528,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 527,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 529,
+                  "src": "1125:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 526,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1125:7:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1124:9:8"
+            },
+            "scope": 530,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 515,
+          "nodeType": "StructuredDocumentation",
+          "src": "712:95:8",
+          "text": " @dev Interface for the SignatureValidator helper, used to support meta-transactions."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          530
+        ],
+        "name": "ISignaturesValidator",
+        "nameLocation": "818:20:8",
+        "scope": 531,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-3.0-or-later"
+  }
+}

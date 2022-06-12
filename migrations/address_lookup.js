@@ -84,7 +84,7 @@ module.exports.DYDX = {
   },
 };
 module.exports.TREASURY = {
-  DEV: "0x8B13f183e27AaD866b0d71F0CD17ca83A9a54ae2",
+  DEV: "0x1d3Af21a1889A1262980Fb8021bF91B792584A88",
   PROD: "",
 };
 module.exports.ASSETS = {
@@ -98,3 +98,60 @@ module.exports.ASSETS = {
     WMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", // 18 decimals
   },
 };
+
+
+/**
+ * IMPL v1
+ * 
+ *       /***********************************************/
+      // *******    DEPLOY EXCHANGE PROXIES   ********
+      /***********************************************/
+
+      // const KyberswapV2 = await ethers.getContractFactory("KyberswapV2");
+      // kyber = await upgrades.deployProxy(
+      //   KyberswapV2,
+      //   [ 
+      //     KYBER.router[network],
+      //     KYBER.factory[network]
+      //   ]);
+      // kyber = await kyber.deployed(); 
+      // console.log("KyberSwap deployed at: ",kyber.address);
+
+      // // DEPLOY UniswapV2 EXCHANGE CONTRACT
+      // const UniswapV2 = await ethers.getContractFactory("UniswapV2");
+      // uniV2 = await upgrades.deployProxy(UniswapV2,[ KYBER.router[network] ]);
+      // uniV2 = await uniV2.deployed(); 
+      // // await uniV2.init( UniswapV2, );
+      // console.log("UniswapV2 deployed at: ", uniV2.address);
+
+
+      // // DEPLOY Sushiswap EXCHANGE CONTRACT
+      // const Sushiswap = await ethers.getContractFactory("Sushiswap");
+      // sushi = await upgrades.deployProxy(Sushiswap,[ SUSHI.router[network] ] );
+      // sushi = await sushi.deployed(); 
+      // console.log("Sushiswap deployed at: ", sushi.address);
+
+
+      /***********************************************/
+      // *******    ADD DEXES TO REGISTRY     ********
+      /***********************************************/
+
+      // const uniDexes = []
+
+      // await registry.addExchange('KYBER',kyber.address);
+      // console.log("Successfully added KYBER to registry...")
+
+      // await registry.addExchange('UNIV2',uniV2.address);
+      // console.log("Successfully added UNIV2 to registry...")
+
+      // await registry.addExchange('SUSHI',sushi.address);
+      // console.log("Successfully added SUSHI to registry...")
+
+
+         // for this
+        /*
+           (bool success, bytes memory data) = address(vault1).delegatecall(
+            abi.encodeWithSelector(dex.swap.selector,dex, tokenA, tokenB, amountA, recipient)
+        );
+*/
+
