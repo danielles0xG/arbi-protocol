@@ -1,0 +1,160 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_dexSymbol",
+          "type": "string"
+        }
+      ],
+      "name": "exchangeRegistryMap",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "dexAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/interfaces/IExchangeRegistry.sol",
+    "id": 4478,
+    "exportedSymbols": {
+      "IExchangeRegistry": [
+        4477
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:170:34",
+    "nodes": [
+      {
+        "id": 4469,
+        "nodeType": "PragmaDirective",
+        "src": "37:22:34",
+        "literals": [
+          "solidity",
+          "0.8",
+          ".4"
+        ]
+      },
+      {
+        "id": 4477,
+        "nodeType": "ContractDefinition",
+        "src": "61:145:34",
+        "nodes": [
+          {
+            "id": 4476,
+            "nodeType": "FunctionDefinition",
+            "src": "95:109:34",
+            "functionSelector": "031c98dc",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "exchangeRegistryMap",
+            "nameLocation": "104:19:34",
+            "parameters": {
+              "id": 4472,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4471,
+                  "mutability": "mutable",
+                  "name": "_dexSymbol",
+                  "nameLocation": "138:10:34",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4476,
+                  "src": "124:24:34",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 4470,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "124:6:34",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "123:26:34"
+            },
+            "returnParameters": {
+              "id": 4475,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4474,
+                  "mutability": "mutable",
+                  "name": "dexAddress",
+                  "nameLocation": "192:10:34",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4476,
+                  "src": "184:18:34",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4473,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "184:7:34",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "183:20:34"
+            },
+            "scope": 4477,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          4477
+        ],
+        "name": "IExchangeRegistry",
+        "nameLocation": "71:17:34",
+        "scope": 4478,
+        "usedErrors": []
+      }
+    ],
+    "license": "AGPL-3.0"
+  }
+}

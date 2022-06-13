@@ -106,25 +106,30 @@ const {BigNumber} =require( "ethers")
         const abiCoder = ethers.utils.defaultAbiCoder;
         const timeout = 600;
 
-        // Test strategy
-        const operations = await abiCoder.encode(
-          [ 
-            'string', //_dexSymbol,
-            'uint256', //_amountIn,
-            'uint256', //_amountOut,
-            'address[]', // pools path kyberOnly []
-            'address[]', //_path [],
-            'uint256' //_swapTimeout
-          ],
-          [
-            "SUSHI",
-            LOAN_AMOUNT,
-            BigNumber.from(AMOUNT_OUT), 
-            [ZERO_ADDRESS], //kyber only
-            AAVE_WETH_DAI_PATH,
-            timeout
-          ]
-         )
+
+      const uniswapV2_swapExactTokensForTokens = "function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)";
+      let ABI = [uniswapV2_swapExactTokensForTokens];
+      let iface = new ethers.utils.Interface(ABI);
+
+      const abiCoder = await ethers.utils.defaultAbiCoder;
+      const _dexSymbol = "SUSHI";
+      
+      const swap_dex = await abiCoder.encode(['string'],["SUSHI"]);
+      const swap_bytes = iface.encodeFunctionData(
+        "swapExactTokensForTokens", [
+          100, 99,
+          ["0x0157f8eae9754e164cb28d4bdcfea06a833ff561","0x0157f8eae9754e164cb28d4bdcfea06a833ff561"],
+          "0x0157f8eae9754e164cb28d4bdcfea06a833ff561",
+          0
+        ]);
+        const opsArray = new Array();
+
+        const encode_strat = await abiCoder.encode([ 'bytes','bytes'],[swap_dex,swap_bytes] );
+        opsArray.push(encode_strat);
+        
+        const operations = await abiCoder.encode(['bytes', encode_strat]);
+
+
          console.log(operations)
 
           /***********************************************/
@@ -140,3 +145,11 @@ const {BigNumber} =require( "ethers")
          
         });
     });
+
+
+            //  .swapExactTokensForTokens(
+        //   _amountIn_2,
+        //   _amountOut_2,
+        //   _path_2,
+        //   address(this),
+        //   block.timestamp)[_path_2.length -1];
