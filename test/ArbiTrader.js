@@ -44,17 +44,21 @@ let strategy, registry, kyber, sushi, uniV2, network, ADMIN;
       console.log("strategy at : ",strategy.address);
 
       const provider  = await ethers.getDefaultProvider("http://localhost:8545");
+
+
       const adminBalance = await provider.getBalance(ADMIN.address);
-
-      console.log("ADMIN: ",ADMIN.address, adminBalance);
-
-      await strategy.connect(ADMIN).deposit({value:adminBalance});
+      const deposit = adminBalance * 1000 * .05 / 1000;
+      const balanceETH =   ethers.utils.formatEther(adminBalance.toString());
+      console.log("ADMIN: ",ADMIN.address, 'balance : ',balanceETH);
+      console.log('deposit: ',ethers.utils.formatEther(deposit.toString()));
+      
+      await strategy.connect(ADMIN).deposit({
+        value: ethers.utils.parseUnits(deposit.toString(), "gwei")
+       });
 
       const traderBalance = await provider.getBalance(strategy.address);
       console.log('traderBalance: ',traderBalance);
     })
-
-
 
     describe("ArbiTrader",function () {
       it("Should start the loan", async function () {
@@ -82,43 +86,45 @@ let strategy, registry, kyber, sushi, uniV2, network, ADMIN;
 
         // Test strategy
         const LOAN_AMOUNT =  ethers.utils.parseEther("500");
-
         const abiCoder = await ethers.utils.defaultAbiCoder;
-        const operations = await abiCoder.encode(
-          [ 
-            'string',
-            'address[]',
-            'string',
-            'address[]'
-          ],
-           [
-             "SUSHI",
-            ["0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"],
-            "QS",
-            ["0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174","0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"]
-        ] );
+        /**
+         * dexSymbol
+         * amounts, in , out
+         * 
+         */
+        const _pool = "0xA374094527e1673A86dE625aa59517c5dE346d32";
+        const _amounts = [500000000000000000000,201340000];
+
+
+        // function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external;
+
+        abiCoder.encode(
+        [ "address" ,"uint256[]"], 
+        [ "0xA374094527e1673A86dE625aa59517c5dE346d32", [500000000000000000000,201340000] ]
+        );
+
          console.log(operations)
 
           /***********************************************/
           // **********  INIT FLASH BOYZ (LOAN)  *********
           /***********************************************/  
 
-          const UNI_DEXES_MATIC  = {
-            GF: GRAVITYFINANCE.router[network],
-            QS: QUICKSWAP.router[network],
-            SUSHI: SUSHI.router[network],
-            // UNIV2: UNISWAP_V2.router[network]
-          }
+          // const UNI_DEXES_MATIC  = {
+          //   GF: GRAVITYFINANCE.router[network],
+          //   QS: QUICKSWAP.router[network],
+          //   SUSHI: SUSHI.router[network],
+          //   // UNIV2: UNISWAP_V2.router[network]
+          // }
           
-          for (const ticker in UNI_DEXES_MATIC) {
-            await strategy.connect(ADMIN).addUniForkDex(ticker,UNI_DEXES_MATIC[ticker]);
-            console.log('trader added: ', ticker,' with address: ',UNI_DEXES_MATIC[ticker])
-          }
+          // for (const ticker in UNI_DEXES_MATIC) {
+          //   await strategy.connect(ADMIN).addUniForkDex(ticker,UNI_DEXES_MATIC[ticker]);
+          //   console.log('trader added: ', ticker,' with address: ',UNI_DEXES_MATIC[ticker])
+          // }
 
          await strategy.connect(ADMIN).performStrategy(
             "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", // loan asset
             LOAN_AMOUNT, // amount to milk aave
-            operations // operations byte[]
+            operations
           );
 
          

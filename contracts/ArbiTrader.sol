@@ -9,6 +9,7 @@ import {DataTypes} from "./loans/utils/DataTypes.sol";
 import "./loans/aaveV3/interfaces/IFlashLoanSimpleReceiver.sol";
 import "./loans/aaveV3/interfaces/IPoolAddressesProvider.sol";
 import "./interfaces/IERC20.sol";
+import "./interfaces/IUniswapV2Pair.sol";
 
 import "../lib/forge-std/src/console.sol";
 /**
@@ -127,66 +128,15 @@ contract ArbiTrader is IFlashLoanSimpleReceiver,ReentrancyGuard {
     * @param _strategy Array of encoded operarions (swaps)
      */
     function _executeOperation(address _asset,bytes calldata _strategy) internal {
-            
-            (
-             string memory _dexSymbol_1,
-             address[] memory _path_1,
-             string memory _dexSymbol_2,
-             address[] memory _path_2
-             ) =  abi.decode( _strategy,(string, address[], string, address[] ));
-        
-            console.log("_dexSymbol_1:" ,_dexSymbol_1);
-            console.log('_path_1: ',_path_1[0]);
-          
-          
-            // SWAP 1
-
-            address _routerAddress_1 = _uniForkDexes[_dexSymbol_1];
-
-            require(_asset == _path_1[0], "loan asset diff from first swap tokenA");
-            uint256 _amountIn_1 = IERC20(_asset).balanceOf(address(this));
-
-            uint256 _amountOut_1 = IUniswapV2Router02(_routerAddress_1).getAmountsOut(_amountIn_1, _path_1)[_path_1.length -1];
-
-            IERC20(_asset).approve(address(_routerAddress_1),_amountIn_1);
-            console.log('_amountIn_1: ',_amountIn_1);
-            console.log('_amountOut_1: ',_amountOut_1);
-            uint256 swapResult_1 = IUniswapV2Router02(_routerAddress_1).swapExactTokensForTokens(
-                    _amountIn_1,
-                    _amountOut_1,
-                    _path_1,
-                    address(this),
-                    block.timestamp)[_path_1.length -1];
-
-            console.log('swapResult_1: ',swapResult_1);
-            require(swapResult_1 > 0, 'swap1 failed.');
-            
-            // SWAP 2
-
-            if(IERC20(_path_1[_path_1.length-1]).balanceOf(address(this)) >= swapResult_1){
-        
-                address _routerAddress_2 = _uniForkDexes[_dexSymbol_2];
-
-                IERC20(_path_2[0]).approve(address(_routerAddress_2),_amountIn_1);
-
-                uint256 _amountIn_2 = swapResult_1;
-
-                uint256 _amountOut_2 = IUniswapV2Router02(_routerAddress_2).getAmountsOut(_amountIn_2, _path_2)[_path_2.length -1];
-                
-                console.log('_amountIn_2: ',swapResult_1);
-                console.log('_amountOut_2: ',_amountOut_2);
-                
-                uint256 swapResult_2 = IUniswapV2Router02(_routerAddress_2).swapExactTokensForTokens(
-                    _amountIn_2,
-                    _amountOut_2,
-                    _path_2,
-                    address(this),
-                    block.timestamp)[_path_2.length -1];
-
-                console.log('swapResult_2: ',swapResult_2);
-                require(swapResult_2 > 0, 'swap2 failed.');
-            }
-    
+        (bytes[] memory strats) =  abi.decode( _strategy,(bytes[]));
+        for(uint i = 0; i < strats.length; i++){
+            (address _pool, uint256[] memory _amountsOut) = abi.decode(strats[i], (address, uint256[]));
+            IUniswapV2Pair(_pool).swap(
+                _amountsOut[0],
+                _amountsOut[1],
+                address(this),
+                "");
+        }
     }
 
 

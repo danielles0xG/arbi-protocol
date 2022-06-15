@@ -7,6 +7,7 @@ require('@openzeppelin/hardhat-upgrades');
 // Runtime Environment as second argument
 
 
+
 module.exports = {
   defaultNetwork: "hardhat",
   // paths: {
@@ -16,17 +17,17 @@ module.exports = {
   //   cache: './cache'
   // },
   networks: {
-    hardhat: {
-      forking: {
-        url: "http://localhost:8545",
-        accounts: [
-          process.env.PRIVATE_KEY_POC
-        ],
-      }
-    },
+    // hardhat: {
+    //   forking: {
+    //     url: "https://rpc.ankr.com/polygon",
+    //     accounts: [
+    //       process.env.PRIVATE_KEY_POC
+    //     ],
+    //   }
+    // },
     dev: {
       url: "http://localhost:8545",
-      gasPrice: "auto",
+      gas: ethers.utils.parseUnits('230000000000000000000', "gwei"),
       accounts: [
         process.env.PRIVATE_KEY_POC
       ],
