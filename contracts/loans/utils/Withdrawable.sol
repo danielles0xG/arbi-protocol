@@ -27,7 +27,7 @@ contract Withdrawable is Ownable {
         if (_assetAddress == ETHER) {
             address self = address(this); // workaround for a possible solidity bug
             assetBalance = self.balance;
-           payable(msg.sender).transfer(assetBalance);
+            payable(msg.sender).transfer(assetBalance);
         } else {
             assetBalance = ERC20(_assetAddress).balanceOf(address(this));
             ERC20(_assetAddress).safeTransfer(msg.sender, assetBalance);

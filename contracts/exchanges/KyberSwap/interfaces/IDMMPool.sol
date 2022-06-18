@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.4;
 
-
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "./IDMMFactory.sol";
@@ -9,7 +8,9 @@ import "./IDMMFactory.sol";
 interface IDMMPool {
     function mint(address to) external returns (uint256 liquidity);
 
-    function burn(address to) external returns (uint256 amount0, uint256 amount1);
+    function burn(address to)
+        external
+        returns (uint256 amount0, uint256 amount1);
 
     function swap(
         uint256 amount0Out,
@@ -20,7 +21,10 @@ interface IDMMPool {
 
     function sync() external;
 
-    function getReserves() external view returns (uint112 reserve0, uint112 reserve1);
+    function getReserves()
+        external
+        view
+        returns (uint112 reserve0, uint112 reserve1);
 
     function getTradeInfo()
         external

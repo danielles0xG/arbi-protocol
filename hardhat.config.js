@@ -1,11 +1,10 @@
 require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
-require('hardhat-contract-sizer');
-require('@openzeppelin/hardhat-upgrades');
+require("hardhat-contract-sizer");
+require("@openzeppelin/hardhat-upgrades");
 // Task action function receives the Hardhat
 // Runtime Environment as second argument
-
 
 module.exports = {
   defaultNetwork: "hardhat",
@@ -20,7 +19,7 @@ module.exports = {
       url: "http://localhost:8545",
       gasPrice: "auto",
       accounts: [
-        '0xaf54683c9883153d26137b90fb28de33435e3dd103bb3b1d8167b0b4e48ced56',
+        "0xaf54683c9883153d26137b90fb28de33435e3dd103bb3b1d8167b0b4e48ced56",
         // process.env.PRIVATE_KEY
       ],
     },
@@ -45,7 +44,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            runs: 200, // 1000000, reduces costs in tx but increases them in deployment
           },
           // outputSelection: {
           //     "*": {
@@ -59,7 +58,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            runs: 200, // 1000000, reduces costs in tx but increases them in deployment
           },
         },
       },
@@ -68,7 +67,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            runs: 200, // 1000000, reduces costs in tx but increases them in deployment
           },
         },
       },
@@ -77,7 +76,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            runs: 200, // 1000000, reduces costs in tx but increases them in deployment
           },
         },
       },
@@ -86,7 +85,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            runs: 200, // 1000000, reduces costs in tx but increases them in deployment
           },
         },
       },
@@ -95,7 +94,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200 // 1000000, reduces costs in tx but increases them in deployment
+            runs: 200, // 1000000, reduces costs in tx but increases them in deployment
           },
         },
       },
@@ -114,6 +113,6 @@ module.exports = {
     alphaSort: true,
     disambiguatePaths: false,
     runOnCompile: false,
-    strict: true
-  }
+    strict: true,
+  },
 };

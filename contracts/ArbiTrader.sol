@@ -89,7 +89,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
             "AT1 Loan Transfer Fail"
         );
         // Avee Pool calling executeOperation function on out contract
-        _executeOperation(_operations, _loopLimit);
+        _executeOperation(_operations);
         // Repay: Approve aave pool to take loan amount + fees
 
         IERC20(_asset).approve(
@@ -99,59 +99,26 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
         return true;
     }
 
+    struct Operations {
+            address _dexAddress;
+            uint256 _amountIn;
+            uint256 _amountOut;
+            address[] _path;
+            uint24[] _poolFees;
+    }
+
     /**
      * @notice IFlashLoanSimpleReceiver implementation
      * @dev Loan provider lending criteria
      * @param _operations Array of encoded operarions (swaps)
      */
-    function _executeOperation(bytes calldata _operations, uint160 _loopLimit)
-        internal
-    {
-        // start multicall
-        // for (uint256 i = 0; i < _loopLimit + 1; i++) {
-        (
-            string memory _dexSymbol,
-            uint256 _amountIn,
-            uint256 _amountOut,
-            address[] memory _poolsPath, // kyberOnly
-            address[] memory _path,
-            uint256 _swapTimeout
-        ) = _decodeOperation(_operations);
-
-        address _dexAddress = IExchangeRegistry(dexRegistry)
-            .exchangeRegistryMap(_dexSymbol);
-        IERC20(_path[0]).approve(address(_dexAddress), _amountIn);
-        require(_dexAddress != address(0), "Dex not found");
-
-        IExchange(_dexAddress).swapExactTokensForTokens(
-            _amountIn,
-            _amountOut,
-            _poolsPath, // kyberOnly address []
-            _path, // IERC20 []
-            address(this),
-            _swapTimeout,
-            _loopLimit
-        );
-        // }
+    function _executeOperation(bytes calldata _operations) internal {
+        (Operations[] memory _ops) = abi.decode(_operations,(Operations[]));
+        for (uint256 i = 0; i < _ops.length; i++) {
+            address dex = _ops[i]._dexAddress;
+        }
     }
 
-    function _decodeOperation(bytes memory _operation)
-        internal
-        returns (
-            string memory,
-            uint256,
-            uint256,
-            address[] memory,
-            address[] memory,
-            uint256
-        )
-    {
-        return
-            abi.decode(
-                (_operation),
-                (string, uint256, uint256, address[], address[], uint256)
-            );
-    }
 
     function _withdrawProfit(address _asset) internal onlyOwner {
         uint256 assetBalance = IERC20(_asset).balanceOf(address(this));
@@ -163,6 +130,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
             assetBalance
         );
     }
+    
 
     function _withdrawNativeProfit() internal onlyOwner nonReentrant {
         uint256 _nativeTokenBalance = address(this).balance;

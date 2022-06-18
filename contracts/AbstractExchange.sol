@@ -2,7 +2,8 @@
 pragma solidity 0.8.4;
 
 import "./interfaces/IExchange.sol";
-abstract contract AbstractExchange{
+
+abstract contract AbstractExchange {
     struct Pool {
         address token0;
         address token1;
@@ -18,8 +19,6 @@ abstract contract AbstractExchange{
         string dexSymbol;
         Swap[] operations;
     }
-
-
 
     event InitStrategy(address _baseAsset, uint256 _loanAmount);
 }

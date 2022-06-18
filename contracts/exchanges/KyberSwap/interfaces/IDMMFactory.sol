@@ -10,11 +10,15 @@ interface IDMMFactory {
         uint32 ampBps
     ) external returns (address pool);
 
-    function setFeeConfiguration(address feeTo, uint16 governmentFeeBps) external;
+    function setFeeConfiguration(address feeTo, uint16 governmentFeeBps)
+        external;
 
     function setFeeToSetter(address) external;
 
-    function getFeeConfiguration() external view returns (address feeTo, uint16 governmentFeeBps);
+    function getFeeConfiguration()
+        external
+        view
+        returns (address feeTo, uint16 governmentFeeBps);
 
     function feeToSetter() external view returns (address);
 
@@ -22,7 +26,10 @@ interface IDMMFactory {
 
     function allPoolsLength() external view returns (uint256);
 
-    function getUnamplifiedPool(IERC20 token0, IERC20 token1) external view returns (address);
+    function getUnamplifiedPool(IERC20 token0, IERC20 token1)
+        external
+        view
+        returns (address);
 
     function getPools(IERC20 token0, IERC20 token1)
         external
