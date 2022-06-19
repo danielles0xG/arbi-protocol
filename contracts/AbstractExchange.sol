@@ -25,6 +25,8 @@ abstract contract AbstractExchange {
     }
 
     struct Strategy {
+        string _strategyId;
+        uint8 _strategyLength;
         string _lenderSymbol;
         address _loanAsset;
         uint256 _loanAmount;

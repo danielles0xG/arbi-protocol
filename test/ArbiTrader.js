@@ -75,41 +75,49 @@ describe("ArbiTrader",function () {
  
 
         // Test strategy
-        const LOAN_AMOUNT = 500;
-        const AMOUNT_OUT = LOAN_AMOUNT;
+        const LOAN_AMOUNT = ethers.utils.parseEther(500);
+        const AMOUNT_OUT = ethers.utils.parseEther();
         const abiCoder = await ethers.utils.defaultAbiCoder;
 
-        const swap_1 = abiCoder.encode(
+        const operation_1 = abiCoder.encode(
             ['string','address','uint256','uint256','address[]','uint24[]'],
             [
-              "UNIV3"
+              "UNIV3",
               UNISWAP_V3.swapRouter,
-              LOAN_AMOUNT,
+              ethers.utils.parseUnits("66080.2");,
               BigNumber.from(AMOUNT_OUT), 
-              [ASSETS.matic.WMATIC,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
-              [400,2000]
+              [ 
+                ASSETS[network].AAVE, 
+                ASSETS[network].WMATIC
+              ],
+              [3000]
             ]
         ) 
 
-        const swap_2 = abiCoder.encode(
+        const operation_2 = abiCoder.encode(
           ['string','address','uint256','uint256','address[]','uint24[]'],
           [ 
-            "UNIV3"
-            UNISWAP_V3.swapRouter,
+            "UNIV2",
+            UNISWAP_V2.router[network],
             LOAN_AMOUNT,
             BigNumber.from(AMOUNT_OUT), 
-            [ASSETS.matic.WETH,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
-            [400,2000]
+            [
+              ASSETS[network].WMATIC,
+              ASSETS[network].AAVE
+            ],
+            [0]
           ]
       ) 
 
 
         const Operations = new Array();
-        Operations.push(swap_1);
-        Operations.push(swap_2);
+        Operations.push(operation_1);
+        Operations.push(operation_2);
 
         const Strategy =
          {
+            _strategyId: 'V1/polygon/001',
+            _strategyLength: 2,
             _lenderSymbol: "AAVE",
             _loanAsset: ASSETS[network].AAVE,
             _loanAmount: LOAN_AMOUNT ,
@@ -119,12 +127,8 @@ describe("ArbiTrader",function () {
         /***********************************************/
         // **********  INIT FLASH BOYZ (LOAN)  *********
         /***********************************************/  
-
-        const stratetyLength = Operations.length
-        await strategy.connect(ADMIN).performStrategy(Strategy,stratetyLength);
-
-        const test = await strategy.test();
-        console.log('dex address',test);
+        // console.log('_strategyLength: ',Strategy._strategyLength);
+        await strategy.connect(ADMIN).performStrategy(Strategy);
         
     });
   });

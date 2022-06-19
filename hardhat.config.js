@@ -22,11 +22,15 @@ module.exports = {
         process.env.PRIVATE_KEY
       ],
     },
-
-    // matic: {
-    //   // url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}`,
-    //   accounts: [process.env.PRIVATE_KEY],
-    // },
+    polygon: {
+      // url:`https://rpc.ankr.com/polygon`,
+      url: `https://twilight-icy-log.matic.quiknode.pro/2d49e0fc113dcba25e5a127bc74a6545b1a9f440/`,
+      accounts: [process.env.PRIVATE_KEY],
+      network_id: 137, // polygon's id
+      gasPrice: "auto", //44Wei
+      timeoutBlocks: 200,
+      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+    },
     // mumbai: {
     //   // url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,
     //   // wss://polygon-mumbai.infura.io/ws/v3/${process.env.PROJECT_ID}
@@ -108,10 +112,13 @@ module.exports = {
       timeout: 40000,
     },
   },
+  etherscan:{
+    apiKey: process.env.POLYGONSCAN_API_KEY
+  },
   contractSizer: {
     alphaSort: true,
     disambiguatePaths: false,
-    runOnCompile: false,
+    runOnCompile: true,
     strict: true,
   },
 };

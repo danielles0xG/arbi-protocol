@@ -25,8 +25,8 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
 
     address public _owner;
     address public _treassury;
-    uint24  public _strategyLength;
     event FailSwapEvent(address _dexAddress);
+    event StrategyEvent(string _strategyId);
 
     modifier onlyOwner() {
         require(msg.sender == _owner, "Only Owner");
@@ -53,9 +53,8 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
      * @notice Main function to trigger arbitrage
      * @param _strategy Object containing loan details and swap operations 
      */
-    function performStrategy(Strategy memory _strategy,uint8 strategyLength_) external onlyOwner {
+    function performStrategy(Strategy memory _strategy) external onlyOwner {
         (bytes memory _data) = abi.encode(_strategy);
-        _strategyLength = strategyLength_;
         _aavePool.flashLoanSimple(
             address(this),
             _strategy._loanAsset,
@@ -76,13 +75,16 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
         bytes calldata _data
     ) external override returns (bool) {
         require(IERC20(_asset).balanceOf(address(this)) >= _amount,"AT: Loan Transfer Fail");
-        Strategy memory _strategy = abi.decode(_data,(Strategy));
+        Strategy memory strategy = abi.decode(_data, (Strategy));
 
-        for(uint8 i = 0; i < _strategyLength; i++){
-            Operation memory _operation = _decodeOperation(_strategy._ops[i]);
+        for(uint8 i = 0; i < strategy._strategyLength; i++){
+            Operation memory _operation = _decodeOperation(strategy._ops[i]);
             if(_swap(_operation) < _operation._amountOut) emit FailSwapEvent(_operation._dexAddress);
         }
         IERC20(_asset).approve(address(_aavePool),_amount + _aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL());
+        
+        // Event to fire when profitable strategy completes; Monitor strat IDs on controller logs
+        emit StrategyEvent(strategy._strategyId);
         return true;
     }
 
@@ -105,7 +107,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
                 })
             );
         }else{
-            _amountOut = IUniswapV2Router02(operation._dexAddress)
+             _amountOut = IUniswapV2Router02(operation._dexAddress)
                                 .swapExactTokensForTokens(
                                     operation._amountIn,
                                     operation._amountOut,
@@ -117,11 +119,13 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
     } 
 
     function _decodeOperation(bytes memory operation) internal returns(Operation memory _operation){
-       (_operation._dexAddress,
+       (
+        _operation._dexSymbol,
+        _operation._dexAddress,
         _operation._amountIn,
         _operation._amountOut,
         _operation._paths,
-        _operation._poolFees) = abi.decode(operation,(address, uint256, uint256, address[], uint24[]));
+        _operation._poolFees) = abi.decode(operation,(string, address, uint256, uint256, address[], uint24[]));
     }
     
     function _withdrawProfit(address _asset) internal onlyOwner {
