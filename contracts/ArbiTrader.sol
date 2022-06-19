@@ -10,37 +10,35 @@ import "./loans/aaveV3/interfaces/IPoolAddressesProvider.sol";
 import "./AbstractExchange.sol";
 import "./interfaces/IExchangeRegistry.sol";
 import "./interfaces/IExchange.sol";
+import "./AbstractExchange.sol";
 
 /**
  * @notice Functional contract is FlashLoanReceiverBase
  * @dev Contract will NOT store funds or store any given state.
  */
-contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
-    IPoolAddressesProvider public aavePoolProvider;
-    IPool public aavePool;
+contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchange{
 
-    address public owner;
-    address public treassury;
-    address public dexRegistry;
-    uint160 public _loopLimit;
+    IPoolAddressesProvider public _aavePoolProvider;
+    IPool public _aavePool;
+
+    address public _owner;
+    address public _treassury;
+    uint24  public _strategyLength;
+    address public test;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only Owner");
+        require(msg.sender == _owner, "Only Owner");
         _;
     }
 
     constructor(
-        address _aavePoolProvider,
-        address _treassury,
-        address _dexRegistry,
-        uint160 loopLimit_
+        address aavePoolProvider_,
+        address treassury_
     ) {
-        owner = msg.sender;
-        treassury = payable(_treassury);
-        dexRegistry = _dexRegistry;
-        aavePoolProvider = IPoolAddressesProvider(_aavePoolProvider);
-        aavePool = IPool(aavePoolProvider.getPool());
-        _loopLimit = loopLimit_;
+        _owner = msg.sender;
+        _treassury = payable(treassury_);
+        _aavePoolProvider = IPoolAddressesProvider(aavePoolProvider_);
+        _aavePool = IPool(_aavePoolProvider.getPool());
     }
 
     /// @dev Deposit funds to cover gas costs
@@ -51,84 +49,59 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
 
     /**
      * @notice Main function to trigger arbitrage
-     * @param _asset address
-     * @param _amount borrowed
-     * @param _operations array of exchanges and swaps to perform
+     * @param _strategy Object containing loan details and swap operations 
      */
-    function performStrategy(
-        address _asset,
-        uint256 _amount,
-        bytes calldata _operations
-    ) external onlyOwner {
-        _initFlashLoan(_asset, _amount, _operations);
-    }
-
-    function _initFlashLoan(
-        address _baseAsset,
-        uint256 _loanAmount,
-        bytes calldata _params
-    ) internal onlyOwner {
-        aavePool.flashLoanSimple(
+    function performStrategy(Strategy memory _strategy,uint8 strategyLength_) external onlyOwner {
+        (bytes memory _data) = abi.encode(_strategy);
+        _strategyLength = strategyLength_;
+        _aavePool.flashLoanSimple(
             address(this),
-            _baseAsset,
-            _loanAmount,
-            _params,
+            _strategy._loanAsset,
+            _strategy._loanAmount,
+            _data,
             0
         );
     }
-
+    /**
+     * @notice IFlashLoanSimpleReceiver implementation
+     * @dev Loan provider lending criteria
+     */
     function executeOperation(
         address _asset,
         uint256 _amount,
         uint256 _premium,
         address _initiator,
-        bytes calldata _operations
+        bytes calldata _data
     ) external override returns (bool) {
-        require(
-            IERC20(_asset).balanceOf(address(this)) >= _amount,
-            "AT1 Loan Transfer Fail"
-        );
-        // Avee Pool calling executeOperation function on out contract
-        _executeOperation(_operations);
-        // Repay: Approve aave pool to take loan amount + fees
+        require(IERC20(_asset).balanceOf(address(this)) >= _amount,"AT1 Loan Transfer Fail");
+        
+        Strategy memory _strategy = abi.decode(_data,(Strategy));
+
+        for(uint8 i = 0; i < _strategyLength; i++){
+            Operation memory _operation = _decodeOperation(_strategy._ops[i]);
+            test = _operation._paths[0];
+        }
 
         IERC20(_asset).approve(
-            address(aavePool),
-            _amount + aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL()
+            address(_aavePool),
+            _amount + _aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL()
         );
         return true;
     }
 
-    struct Operations {
-            address _dexAddress;
-            uint256 _amountIn;
-            uint256 _amountOut;
-            address[] _path;
-            uint24[] _poolFees;
+    function _decodeOperation(bytes memory operation) internal returns(Operation memory _operation){
+       (_operation._dexAddress,
+        _operation._amountIn,
+        _operation._amountOut,
+        _operation._paths,
+        _operation._poolFees) = abi.decode(operation,(address, uint256, uint256, address[], uint24[]));
     }
-
-    /**
-     * @notice IFlashLoanSimpleReceiver implementation
-     * @dev Loan provider lending criteria
-     * @param _operations Array of encoded operarions (swaps)
-     */
-    function _executeOperation(bytes calldata _operations) internal {
-        (Operations[] memory _ops) = abi.decode(_operations,(Operations[]));
-        for (uint256 i = 0; i < _ops.length; i++) {
-            address dex = _ops[i]._dexAddress;
-        }
-    }
-
-
+    
     function _withdrawProfit(address _asset) internal onlyOwner {
         uint256 assetBalance = IERC20(_asset).balanceOf(address(this));
         require(assetBalance > 0, "No profit yet for this asset.");
-        IERC20(_asset).approve(address(treassury), assetBalance);
-        IERC20(_asset).transferFrom(
-            address(this),
-            address(treassury),
-            assetBalance
-        );
+        IERC20(_asset).approve(address(_treassury), assetBalance);
+        IERC20(_asset).transfer(address(_treassury),assetBalance);
     }
     
 
@@ -138,15 +111,14 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard {
             _nativeTokenBalance > 0,
             "No profit yet for this native currency."
         );
-        (bool _success, ) = treassury.call{value: _nativeTokenBalance}(" ");
+        (bool _success, ) = _treassury.call{value: _nativeTokenBalance}(" ");
         require(_success);
     }
 
     fallback() external payable {
-        revert();
+
     }
 
     receive() external payable {
-        revert();
     }
 }

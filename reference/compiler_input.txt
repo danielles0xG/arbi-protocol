@@ -239,3 +239,53 @@
     }
   }
 }
+
+
+
+  /**
+   * const operations_ = web3.eth.abi.encodeParameters(
+          [
+            {
+              "Operations": { 
+               "ops":[
+                  { 
+                    "_dexAddress_1" : 'address',
+                    "_amountIn_1" : 'uint256',
+                    "_amountOut_1" : 'uint256',
+                    "_path_1" : 'address[]',
+                    "_poolFees_1" : 'uint24[]'
+                  },
+                  { 
+                    "_dexAddress_2" : 'address',
+                    "_amountIn_2" : 'uint256',
+                    "_amountOut_2" : 'uint256',
+                    "_path_2" : 'address[]',
+                    "_poolFees_2" : 'uint24[]'
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "ops":
+              [
+                {
+                "_dexAddress_1" : UNISWAP_V3.swapRouter,
+                "_amountIn_1" : LOAN_AMOUNT,
+                "_amountOut_1" : BigNumber.from(AMOUNT_OUT), 
+                "_path_1" : [ASSETS.matic.WMATIC,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
+                "_poolFees_1" :[400,2000]
+              },
+              {
+                "_dexAddress_2" : UNISWAP_V2.router.matic,
+                "_amountIn_2" : LOAN_AMOUNT,
+                "_amountOut_2" : BigNumber.from(AMOUNT_OUT), 
+                "_path_2" :[ASSETS.matic.WMATIC,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
+                "_poolFees_2" :[400,2000]
+              }
+            ]
+           }
+          ]
+        );
+   */

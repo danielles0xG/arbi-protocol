@@ -19,8 +19,7 @@ module.exports = {
       url: "http://localhost:8545",
       gasPrice: "auto",
       accounts: [
-        "0xaf54683c9883153d26137b90fb28de33435e3dd103bb3b1d8167b0b4e48ced56",
-        // process.env.PRIVATE_KEY
+        process.env.PRIVATE_KEY
       ],
     },
 

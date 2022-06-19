@@ -25,9 +25,7 @@ let strategy, provider, adminBalance, deposit, balanceETH;
 
 describe("ArbiTrader",function () {
       it("Should start the loan", async function () {
-        let strategy, registry, kyber, sushi, uniV2;
 
-       before("setup", async function () {
         //***********************************************/
         // **********     WALLET SETUP    ***************
         network = "matic"
@@ -44,98 +42,87 @@ describe("ArbiTrader",function () {
  
        const loopSwapLimit = 3;
        const ArbiTrader = await ethers.getContractFactory("ArbiTrader");
-       this.strategy = await ArbiTrader.deploy(
+       
+       strategy = await ArbiTrader.deploy(
                                            AAVE.poolAddressesProvider['matic'],
                                            TREASURY.DEV
                                          );
-       this.strategy = await this.strategy.deployed();
-       console.log("strategy at : ",this.strategy.address);
+       
+       strategy = await strategy.deployed();
+       console.log("strategy at : ",strategy.address);
        provider  = await ethers.getDefaultProvider("http://localhost:8545");
        adminBalance = await provider.getBalance(ADMIN.address);
-       deposit = adminBalance * 1000 * .05 / 1000;
-       balanceETH =   ethers.utils.formatEther(adminBalance.toString());
+       deposit = adminBalance * 1000 * .5 / 1000;
+       balanceETH = ethers.utils.formatEther(adminBalance.toString());
+       
        console.log("ADMIN: ",ADMIN.address, 'balance : ',balanceETH);
        console.log('deposit: ',ethers.utils.formatEther(deposit.toString()));
-     });
  
+      let wallet = new ethers.Wallet(process.env.PRIVATE_KEY_POC , provider);
+      let amountInEther = ethers.utils.formatEther(deposit.toString());
+      
+      let tx = { 
+        to: strategy.address,
+        value: ethers.utils.parseEther(amountInEther)
+      };
+
+      await wallet.sendTransaction(tx)
+      .then((txObj) => {console.log('txHash', txObj.hash)})
+      .catch(err => console.log(err));
+    
+      const traderBalance = await provider.getBalance(strategy.address);
+      console.log('traderBalance: ',traderBalance);
  
-     describe("Deposit gas funds",function () {
-       it("Should deposit", async function () {
- 
-             let wallet = new ethers.Wallet(process.env.PRIVATE_KEY_POC , provider);
-             let receiverAddress = this.strategy.address
-             let amountInEther = ethers.utils.formatEther(deposit.toString());
- 
-             let tx = { to: receiverAddress, value: ethers.utils.parseEther(amountInEther) };
- 
-             await wallet.sendTransaction(tx).then((txObj) => {
-                 console.log('txHash', txObj.hash)
-             }).catch(err => console.log(err));
-           
-             const traderBalance = await provider.getBalance(this.strategy.address);
-             console.log('traderBalance: ',traderBalance);
- 
-         });
-     });
 
         // Test strategy
-        const LOAN_AMOUNT = 5000;
+        const LOAN_AMOUNT = 500;
         const AMOUNT_OUT = LOAN_AMOUNT;
+        const abiCoder = await ethers.utils.defaultAbiCoder;
 
-        const operations = web3.eth.abi.encodeParameters(
+        const swap_1 = abiCoder.encode(
+            ['address','uint256','uint256','address[]','uint24[]'],
+            [
+              UNISWAP_V3.swapRouter,
+              LOAN_AMOUNT,
+              BigNumber.from(AMOUNT_OUT), 
+              [ASSETS.matic.WMATIC,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
+              [400,2000]
+            ]
+        ) 
+
+        const swap_2 = abiCoder.encode(
+          ['address','uint256','uint256','address[]','uint24[]'],
           [
-            {
-              "swap1":{ 
-                "_dexAddress_1" : 'address',
-                "_amountIn_1" : 'uint256',
-                "_amountOut_1" : 'uint256',
-                "_path_1" : 'address[]',
-                "_poolFees_1" : 'uint24[]'
-              }
-            },
-            {
-              "swap1":{ 
-                "_dexAddress_1" : 'address',
-                "_amountIn_1" : 'uint256',
-                "_amountOut_1" : 'uint256',
-                "_path_1" : 'address[]',
-                "_poolFees_1" : 'uint24[]'
-              }
-            }
-          ],
-          [
-            {
-              "_dexAddress_1" : UNISWAP_V3.swapRouter,
-              "_amountIn_1" : LOAN_AMOUNT,
-              "_amountOut_1" : BigNumber.from(AMOUNT_OUT), 
-              "_path_1" :[ASSETS.matic.WMATIC,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
-              "_poolFees_1" :[400,2000]
-            },
-            {
-              "_dexAddress_1" : UNISWAP_V3.swapRouter,
-              "_amountIn_1" : LOAN_AMOUNT,
-              "_amountOut_1" : BigNumber.from(AMOUNT_OUT), 
-              "_path_1" :[ASSETS.matic.WMATIC,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
-              "_poolFees_1" :[400,2000]
-            }
+            UNISWAP_V3.swapRouter,
+            LOAN_AMOUNT,
+            BigNumber.from(AMOUNT_OUT), 
+            [ASSETS.matic.WETH,ASSETS.matic.WETH,ASSETS.matic.WMATIC],
+            [400,2000]
           ]
-        );
-        console.log('operations: ',operations)
-        // const operations = await abiCoder.encode(
-        //   ['bytes'], [ OPERATIONS ]
-        // );
+      ) 
 
+
+        const Operations = new Array();
+        Operations.push(swap_1);
+        Operations.push(swap_2);
+
+        const Strategy =
+         {
+            _lenderSymbol: "AAVE",
+            _loanAsset: ASSETS[network].AAVE,
+            _loanAmount: LOAN_AMOUNT ,
+            _ops: Operations
+         }
 
         /***********************************************/
         // **********  INIT FLASH BOYZ (LOAN)  *********
         /***********************************************/  
 
-         await this.strategy.connect(ADMIN).performStrategy(
-            ASSETS[network].AAVE, // loan asset
-            LOAN_AMOUNT, // amount to milk aave
-            operations // operations byte[]
-          );
+        const stratetyLength = Operations.length
+        await strategy.connect(ADMIN).performStrategy(Strategy,stratetyLength);
 
-         
-        });
+        const test = await strategy.test();
+        console.log('dex address',test);
+        
     });
+  });

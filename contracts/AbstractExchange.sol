@@ -14,10 +14,20 @@ abstract contract AbstractExchange {
         uint256 amountIn;
         uint256 amountOutMin;
     }
+    
+    struct Operation {
+            address _dexAddress; 
+            uint256 _amountIn; 
+            uint256 _amountOut; 
+            address[] _paths;
+            uint24[] _poolFees;
+    }
 
-    struct ArbitrageOperation {
-        string dexSymbol;
-        Swap[] operations;
+    struct Strategy {
+        string _lenderSymbol;
+        address _loanAsset;
+        uint256 _loanAmount;
+        bytes[] _ops;
     }
 
     event InitStrategy(address _baseAsset, uint256 _loanAmount);
