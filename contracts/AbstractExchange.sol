@@ -16,6 +16,7 @@ abstract contract AbstractExchange {
     }
     
     struct Operation {
+            string _dexSymbol;
             address _dexAddress; 
             uint256 _amountIn; 
             uint256 _amountOut; 

@@ -80,8 +80,9 @@ describe("ArbiTrader",function () {
         const abiCoder = await ethers.utils.defaultAbiCoder;
 
         const swap_1 = abiCoder.encode(
-            ['address','uint256','uint256','address[]','uint24[]'],
+            ['string','address','uint256','uint256','address[]','uint24[]'],
             [
+              "UNIV3"
               UNISWAP_V3.swapRouter,
               LOAN_AMOUNT,
               BigNumber.from(AMOUNT_OUT), 
@@ -91,8 +92,9 @@ describe("ArbiTrader",function () {
         ) 
 
         const swap_2 = abiCoder.encode(
-          ['address','uint256','uint256','address[]','uint24[]'],
-          [
+          ['string','address','uint256','uint256','address[]','uint24[]'],
+          [ 
+            "UNIV3"
             UNISWAP_V3.swapRouter,
             LOAN_AMOUNT,
             BigNumber.from(AMOUNT_OUT), 

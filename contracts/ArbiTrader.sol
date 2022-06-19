@@ -11,6 +11,8 @@ import "./AbstractExchange.sol";
 import "./interfaces/IExchangeRegistry.sol";
 import "./interfaces/IExchange.sol";
 import "./AbstractExchange.sol";
+import "./exchanges/UniswapV2/interfaces/IUniswapV2Router02.sol";
+import "./exchanges/UniswapV3/interfaces/ISwapRouter.sol";
 
 /**
  * @notice Functional contract is FlashLoanReceiverBase
@@ -24,7 +26,7 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
     address public _owner;
     address public _treassury;
     uint24  public _strategyLength;
-    address public test;
+    event FailSwapEvent(address _dexAddress);
 
     modifier onlyOwner() {
         require(msg.sender == _owner, "Only Owner");
@@ -73,21 +75,46 @@ contract ArbiTrader is IFlashLoanSimpleReceiver, ReentrancyGuard, AbstractExchan
         address _initiator,
         bytes calldata _data
     ) external override returns (bool) {
-        require(IERC20(_asset).balanceOf(address(this)) >= _amount,"AT1 Loan Transfer Fail");
-        
+        require(IERC20(_asset).balanceOf(address(this)) >= _amount,"AT: Loan Transfer Fail");
         Strategy memory _strategy = abi.decode(_data,(Strategy));
 
         for(uint8 i = 0; i < _strategyLength; i++){
             Operation memory _operation = _decodeOperation(_strategy._ops[i]);
-            test = _operation._paths[0];
+            if(_swap(_operation) < _operation._amountOut) emit FailSwapEvent(_operation._dexAddress);
         }
-
-        IERC20(_asset).approve(
-            address(_aavePool),
-            _amount + _aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL()
-        );
+        IERC20(_asset).approve(address(_aavePool),_amount + _aavePool.FLASHLOAN_PREMIUM_TO_PROTOCOL());
         return true;
     }
+
+    /* 
+         @dev Current version only supports single hop routes.
+    */
+    function _swap(Operation memory operation) internal returns(uint256 _amountOut){
+        IERC20(operation._paths[0]).approve(operation._dexAddress, operation._amountIn);
+        if(keccak256(bytes(operation._dexSymbol)) == keccak256(bytes("UNIV3"))){
+            _amountOut = ISwapRouter(operation._dexAddress).exactInputSingle(
+                ISwapRouter.ExactInputSingleParams({
+                    tokenIn: operation._paths[0],
+                    tokenOut: operation._paths[1],
+                    fee: operation._poolFees[0],
+                    recipient: address(this),
+                    deadline: block.timestamp,
+                    amountIn: operation._amountIn,
+                    amountOutMinimum: operation._amountOut,
+                    sqrtPriceLimitX96: 0
+                })
+            );
+        }else{
+            _amountOut = IUniswapV2Router02(operation._dexAddress)
+                                .swapExactTokensForTokens(
+                                    operation._amountIn,
+                                    operation._amountOut,
+                                    operation._paths,
+                                    address(this),
+                                    block.timestamp
+                                )[1];
+        }
+    } 
 
     function _decodeOperation(bytes memory operation) internal returns(Operation memory _operation){
        (_operation._dexAddress,
