@@ -24,7 +24,7 @@ module.exports = {
     },
     polygon: {
       // url:`https://rpc.ankr.com/polygon`,
-      url: `https://twilight-icy-log.matic.quiknode.pro/2d49e0fc113dcba25e5a127bc74a6545b1a9f440/`,
+      url: `https://twilight-icy-log.matic.quiknode.pro/${process.env.QUICK_NODE_KEY}/`,
       accounts: [process.env.PRIVATE_KEY],
       network_id: 137, // polygon's id
       gasPrice: "auto", //44Wei
