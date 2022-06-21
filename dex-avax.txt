@@ -20,3 +20,19 @@ Research critirea:
    Moonriver: 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506
    Fantom: 02dA8Cb0d097eB8D57A175b88c7D8b47997506	
 5. https://docs.sushi.com/docs/Developers/Deployment%20Addresses
+
+### Trader Joe ### 
+
+1. https://github.com/traderjoe-xyz/joe-core/blob/main/contracts/traderjoe/JoeRouter02.sol
+2. 0x60aE616a2155Ee3d9A68541Ba4544862310933d4
+3. JoeRouter02.sol 
+4. //
+5. https://docs.traderjoexyz.com/en/security-and-contracts/contracts
+
+### Pangolin ### 
+
+1. https://github.com/pangolindex/exchange-contracts/blob/main/contracts/pangolin-periphery/PangolinRouter.sol
+2. 0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106
+3. PangolinRouter.sol
+4. //
+5. https://docs.pangolin.exchange/security-and-contracts/contracts
