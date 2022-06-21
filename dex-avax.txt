@@ -1,0 +1,22 @@
+DEX SWAPS INTEGRATIONS AVALANCHE C-CHAIN 
+
+Research critirea:
+
+   1.- GITHUB URL : Protocol Smart contracts github repo
+   2.- Main contract to call the swap function:
+   3.- Name of contract
+   4.- Addresses of this contract on each chain they offer service
+   5.- URL of the swap methods documentation, technical specification (meaning of params to pass to swap)
+
+### SushiSwap AVAX C-CHAIN ### 
+
+1. https://github.com/sushiswap/sushiswap/blob/master/protocols/sushiswap/contracts/UniswapV2Router02.sol
+2. 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506
+3. SushiSwapRouter.sol 
+4. Ethereum: 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F
+   BSC: 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506
+   Arbitrum: 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506
+   Polygon: 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506
+   Moonriver: 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506
+   Fantom: 02dA8Cb0d097eB8D57A175b88c7D8b47997506	
+5. https://docs.sushi.com/docs/Developers/Deployment%20Addresses
