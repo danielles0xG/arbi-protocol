@@ -66,7 +66,7 @@ module.exports.APESWAP = {
   factory: {
     bsc: "0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6",
   },
-}
+};
 
 module.exports.BISWAP = {
   router: {
@@ -75,7 +75,7 @@ module.exports.BISWAP = {
   factory: {
     bsc: "0x858E3312ed3A876947EA49d572A7C42DE08af7EE",
   },
-}
+};
 
 module.exports.MDEX = {
   router: {
@@ -84,7 +84,7 @@ module.exports.MDEX = {
   factory: {
     bsc: "0x3CD1C46068dAEa5Ebb0d3f55F6915B10648062B8",
   },
-}
+};
 
 module.exports.BABYSWAP = {
   router: {
@@ -93,7 +93,7 @@ module.exports.BABYSWAP = {
   factory: {
     bsc: "0x86407bEa2078ea5f5EB5A52B2caA963bC1F889Da",
   },
-}
+};
 
 module.exports.NOMISWAP = {
   router: {
@@ -102,7 +102,7 @@ module.exports.NOMISWAP = {
   factory: {
     bsc: "0xd6715A8be3944ec72738F0BFDC739d48C3c29349",
   },
-}
+};
 
 module.exports.TRADERJOE = {
   router: {
