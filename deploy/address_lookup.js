@@ -41,6 +41,85 @@ module.exports.SUSHI = {
     bsc:"0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
     arbitrum:"0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
   },
+  factory: {
+    matic: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+    avax: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+    fantom: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+    bsc: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+    arbitrum: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4"
+  },
+};
+
+module.exports.PANCAKESWAP = {
+  router: {
+    bsc: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+  },
+  factory: {
+    bsc: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
+  },
+};
+
+module.exports.APESWAP = {
+  router: {
+    bsc: "0xcF0feBd3f17CEf5b47b0cD257aCf6025c5BFf3b7",
+  },
+  factory: {
+    bsc: "0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6",
+  },
+}
+
+module.exports.BISWAP = {
+  router: {
+    bsc: "0x3a6d8cA21D1CF76F653A67577FA0D27453350dD8",
+  },
+  factory: {
+    bsc: "0x858E3312ed3A876947EA49d572A7C42DE08af7EE",
+  },
+}
+
+module.exports.MDEX = {
+  router: {
+    bsc: "0x0384E9ad329396C3A6A401243Ca71633B2bC4333",
+  },
+  factory: {
+    bsc: "0x3CD1C46068dAEa5Ebb0d3f55F6915B10648062B8",
+  },
+}
+
+module.exports.BABYSWAP = {
+  router: {
+    bsc: "0x325E343f1dE602396E256B67eFd1F61C3A6B38Bd",
+  },
+  factory: {
+    bsc: "0x86407bEa2078ea5f5EB5A52B2caA963bC1F889Da",
+  },
+}
+
+module.exports.NOMISWAP = {
+  router: {
+    bsc: "0xd654953d746f0b114d1f85332dc43446ac79413d",
+  },
+  factory: {
+    bsc: "0xd6715A8be3944ec72738F0BFDC739d48C3c29349",
+  },
+}
+
+module.exports.TRADERJOE = {
+  router: {
+    avax: "0x60aE616a2155Ee3d9A68541Ba4544862310933d4",
+  },  
+    factory: {
+    avax: "0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10",
+  },
+};
+
+module.exports.PANGOLIN = {
+  router: {
+    avax: "0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106",
+  }  
+    factory: {
+    avax: "0xefa94DE7a4656D787667C749f7E1223D71E9FD88",
+  }
 };
 
 module.exports.KYBER = {
