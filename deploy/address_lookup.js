@@ -116,10 +116,10 @@ module.exports.TRADERJOE = {
 module.exports.PANGOLIN = {
   router: {
     avax: "0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106",
-  }  
+  },
     factory: {
     avax: "0xefa94DE7a4656D787667C749f7E1223D71E9FD88",
-  }
+  },
 };
 
 module.exports.KYBER = {
