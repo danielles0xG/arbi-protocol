@@ -4,7 +4,7 @@
 (async function () {
   const ethers = require("ethers");
   const write_node =
-    "https://twilight-icy-log.matic.quiknode.pro/6b18b0d8485309d9c66de130cdd8187124b3d0f9";
+    "https://twilight-icy-log.matic.quiknode.pro/${process.env.quicknode_matic_pkey}";
   const read_node = "https://polygon-rpc.com/";
   const { BigNumber } = require("ethers");
 
